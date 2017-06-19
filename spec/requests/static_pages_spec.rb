@@ -1,24 +1,24 @@
 require 'spec_helper'
 
 describe "StaticPages" do
-  describe "Home page" do
-    it "should have the content 'home'" do
+  describe "Страницы Новости" do
+    it "should have the content 'Новости'" do
 			visit '/static_pages/home'
-			expect(page).to have_content('home')
+			expect(page).to have_content('Новости')
     end
-    it "should have the content 'home'" do
+    it "should have the content 'Новости'" do
 			visit '/static_pages/home'
-			expect(page).to have_title('home')
+			expect(page).to have_title('Новости')
     end
   end
-  describe "Help page" do
-    it "should have the content 'help'" do
+  describe "Страницы Анонсы" do
+    it "should have the content 'Анонсы'" do
 			visit '/static_pages/help'
-			expect(page).to have_content('help')
+			expect(page).to have_content('Анонсы')
     end
-    it "should have the content 'help'" do
+    it "should have the content 'Анонсы'" do
 			visit '/static_pages/help'
-			expect(page).to have_title('help')
+			expect(page).to have_title('Анонсы')
     end
   end
   describe "Страницы Статьи" do

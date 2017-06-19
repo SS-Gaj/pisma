@@ -1,2 +1,12 @@
-<h1>StaticPages#help</h1>
-<p>Find me in app/views/static_pages/help.html.erb</p>
+<% provide(:title, 'help') %>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Новости от Reuters.com | <%= yield(:title) %></title>
+  </head>
+  <body>
+    <h1>Анонсы#help</h1>
+      <p>Find me in app/views/static_pages/help.html.erb</p>
+  </body>
+</html>
+

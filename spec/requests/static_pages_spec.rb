@@ -3,21 +3,21 @@ require 'spec_helper'
 describe "StaticPages" do
   describe "Страницы Новости" do
     it "should have the content 'Новости'" do
-			visit '/static_pages/home'
+			visit '/static_pages/news'
 			expect(page).to have_content('Новости')
     end
     it "should have the content 'Новости'" do
-			visit '/static_pages/home'
+			visit '/static_pages/news'
 			expect(page).to have_title('Новости')
     end
   end
   describe "Страницы Анонсы" do
     it "should have the content 'Анонсы'" do
-			visit '/static_pages/help'
+			visit '/static_pages/anonce'
 			expect(page).to have_content('Анонсы')
     end
     it "should have the content 'Анонсы'" do
-			visit '/static_pages/help'
+			visit '/static_pages/anonce'
 			expect(page).to have_title('Анонсы')
     end
   end

@@ -1,8 +1,8 @@
 class StaticPagesController < ApplicationController
-  def home
+  def news
   end
 
-  def help
+  def anonce
   end
 
   def article

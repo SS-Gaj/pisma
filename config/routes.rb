@@ -1,6 +1,7 @@
 AtTwo::Application.routes.draw do
   # get "static_pages/news"
-  match '/news',    to: 'static_pages#news',    via: 'get'
+  # match '/news',    to: 'static_pages#news',    via: 'get'
+	root 'static_pages#news'
   # get "static_pages/anonce"
   match '/anonce',    to: 'static_pages#anonce',    via: 'get'
   # get "static_pages/article"

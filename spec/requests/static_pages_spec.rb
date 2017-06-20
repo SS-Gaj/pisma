@@ -4,12 +4,12 @@ describe "StaticPages" do
   describe "Страницы Новости" do
     it "should have the content 'Новости'" do
 			# visit '/static_pages/news'
-        visit news_path
+        visit root_path
 			expect(page).to have_content('Новости')
     end
     it "should have the content 'Новости'" do
 			# visit '/static_pages/news'
-        visit news_path
+        visit root_path
 			expect(page).to have_title('Новости')
     end
   end

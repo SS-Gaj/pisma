@@ -4,14 +4,17 @@ ruby '2.1.8'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.2'
+gem 'pg', '0.15.1'
 gem 'bootstrap-sass', '~> 2.3.2.0'
 gem 'rake', '< 11.0'
 gem 'bcrypt-ruby', '3.1.2'
+
 # Use sqlite3 as the database for Active Record
 group :development, :test do
-  gem 'sqlite3', '1.3.8'
   gem 'rspec-rails', '2.13.1'
-  gem 'childprocess', '~> 0.6.1'
+  # gem 'childprocess', '~> 0.6.1'
+	# В Листинге 3.32, где Gemfile исправляется с целью убрать 'sqlite' и добавить 'postgres' этой строки нет;
+  # Она добавляется в Листинге 3.36 для ускорения тестов;
 end
 
 group :test do
@@ -47,7 +50,6 @@ group :doc do
 end
 
 group :production do
-  gem 'pg', '0.15.1'
   gem 'rails_12factor', '0.0.2'
 end
 

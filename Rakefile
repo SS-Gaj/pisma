@@ -3,4 +3,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-AtTwo::Application.load_tasks
+Pisma::Application.load_tasks

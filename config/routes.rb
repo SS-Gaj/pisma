@@ -1,4 +1,9 @@
-AtTwo::Application.routes.draw do
+Pisma::Application.routes.draw do
+  # get "bands/index"
+	match '/bands',    to: 'bands#index',    via: 'get'
+  # get "bands/create"
+	match '/create',    to: 'bands#create',    via: 'get'	#'post'
+  get "bands/destroy"
   # get "static_pages/news"
   # match '/news',    to: 'static_pages#news',    via: 'get'
 	root 'static_pages#news'

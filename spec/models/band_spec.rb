@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Band do
 
-# Это создается "виктуальная" новость, с которой ниже выполняются тесты;
+# Это создается "виртуальная" новость, с которой ниже выполняются тесты;
   before { @band = Band.new(bn_head: "GLOBAL MARKETS", novelty: "European stock markets open down", 
   bn_date: "2017-07-14 19:57:39", bn_url: "http://www.reuters.com/article/global-markets-idUSL5N1KP1QZ") }
 

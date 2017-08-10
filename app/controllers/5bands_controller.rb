@@ -6,13 +6,10 @@ class BandsController < ApplicationController
 
   def create
 #REUTERS_HOME = 'http://www.reuters.com/'
-rtrs_url = ["http://www.reuters.com/news/archive/marketsNews", "http://www.reuters.com/news/archive/hotStocksNews", "http://www.reuters.com/news/archive/businessNews", "http://www.reuters.com/news/archive/ousivMolt"]
-rtrs_url.each do |my_url|
 #1 обрабатываем 1-ю страницу
     pastday = Date.today
     agent = Mechanize.new
-    #page = agent.get("http://www.reuters.com/news/archive/marketsNews")
-    page = agent.get(my_url)
+    page = agent.get("http://www.reuters.com/news/archive/marketsNews")
     doc = Nokogiri::HTML(page.body)
     div_block_article = doc.css("div[class=story-content]")
     div_block_article.each do |link|
@@ -52,7 +49,7 @@ rtrs_url.each do |my_url|
     break if link_next == nil
   end # until pastday < target_date
 end
-end # def create
+
   def destroy
   end
 
@@ -67,15 +64,13 @@ def my_file (mas)
     name_file = true
   elsif mas =~ /japan-stocks/
     name_file = true
-  elsif mas =~ /stocks-hongkong/
+  elsif mas =~ /hongkong/
     name_file = true
-  elsif mas =~ /china-stocks-close/
-    name_file = true
-  elsif mas =~ /china-stocks-midday/
+  elsif mas =~ /china/
     name_file = true
   elsif mas =~ /europe-stocks/
     name_file = true
-  elsif mas =~ /opec|oil/
+  elsif mas =~ /germany/
     name_file = true
   else
     name_file = false

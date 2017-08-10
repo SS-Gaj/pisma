@@ -4,6 +4,7 @@
     <%= band.novelty %>
   </span>
   <span class="timestamp">
-    <%= band.bn_date %>
+    <%= band.bn_date %> / 
+    <%= time_ago_in_words(band.bn_date) %> ago;
   </span>
 </li>

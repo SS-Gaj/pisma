@@ -6,7 +6,7 @@ class BandsController < ApplicationController
 
   def create
 #REUTERS_HOME = 'http://www.reuters.com/'
-rtrs_url = ["http://www.reuters.com/news/archive/marketsNews", "http://www.reuters.com/news/archive/hotStocksNews", "http://www.reuters.com/news/archive/businessNews", "http://www.reuters.com/news/archive/ousivMolt"]
+rtrs_url = ["http://www.reuters.com/news/archive/marketsNews", "http://www.reuters.com/news/archive/hotStocksNews", "http://www.reuters.com/news/archive/businessNews", "http://www.reuters.com/news/archive/ousivMolt", "http://www.reuters.com/news/archive/hongkongMktRpt"]
 rtrs_url.each do |my_url|
 #1 обрабатываем 1-ю страницу
     pastday = Date.today

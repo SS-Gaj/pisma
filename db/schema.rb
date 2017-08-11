@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170808201616) do
+ActiveRecord::Schema.define(version: 20170811132134) do
 
   create_table "bands", force: true do |t|
     t.string   "bn_head"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20170808201616) do
     t.string   "bn_url"
   end
 
+  add_index "bands", ["bn_date"], name: "index_bands_on_bn_date"
   add_index "bands", ["created_at"], name: "index_bands_on_created_at"
 
 end

@@ -63,6 +63,13 @@ class BandsController < ApplicationController
     doc = Nokogiri::HTML(page.body)
     div_all_page = doc.css("div[class=inner-container]")
     @div_article_header = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y] h1").text
+    @div_date = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y]").css("div[class=ArticleHeader_date_V9eGk]").text
+    article = div_all_page.css("div[class=ArticleBody_body_2ECha] p")
+    mas_glob = []
+    article.each do |elem|
+      mas_glob.push(elem.text.gsub("\n", " "))
+    end
+    @mas_p = mas_glob
   end
 
   def destroy

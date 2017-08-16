@@ -1,11 +1,10 @@
 Pisma::Application.routes.draw do
-resources :bands	#170814
-#170814  match '/show',    to: 'bands#show',    via: 'get'
+  match '/show',    to: 'bands#show',    via: 'get'
   # get "bands/index"
-#170814	match '/bands',    to: 'bands#index',    via: 'get'
+	match '/bands',    to: 'bands#index',    via: 'get'
   # get "bands/create"
-#170814	match '/create',    to: 'bands#create',    via: 'get'	#'post'
-#170814  get "bands/destroy"
+	match '/create',    to: 'bands#create',    via: 'get'	#'post'
+  get "bands/destroy"
   # get "static_pages/news"
   # match '/news',    to: 'static_pages#news',    via: 'get'
 	root 'static_pages#news'

@@ -57,9 +57,12 @@ class BandsController < ApplicationController
   end # def new
 
   def show
-	@band = Band.find(params[:id])
-	#@band = Band.find params.require(:id)
-	#@band = Band.find(110)
+	  @band = Band.find(params[:id])
+    agent = Mechanize.new
+    page = agent.get("http://www.reuters.com"+@band.bn_url)
+    doc = Nokogiri::HTML(page.body)
+    div_all_page = doc.css("div[class=inner-container]")
+    @div_article_header = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y] h1").text
   end
 
   def destroy

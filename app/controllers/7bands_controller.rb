@@ -6,17 +6,22 @@ class BandsController < ApplicationController
 
   def new
     #REUTERS_HOME = 'http://www.reuters.com/'
-@bands_last = Band.first
-    rtrs_url = ["http://www.reuters.com/news/archive/marketsNews", "http://www.reuters.com/news/archive/hotStocksNews", "http://www.reuters.com/news/archive/businessNews", "http://www.reuters.com/news/archive/ousivMolt", "http://www.reuters.com/news/archive/hongkongMktRpt"]
+ 		@bands_end = Band.first
+    rtrs_url = ["http://www.reuters.com/news/archive/marketsNews", 
+"http://www.reuters.com/news/archive/hotStocksNews", 
+"http://www.reuters.com/news/archive/businessNews", 
+"http://www.reuters.com/news/archive/ousivMolt", 
+"http://www.reuters.com/news/archive/hongkongMktRpt"]
     rtrs_url.each do |my_url|
       #1 обрабатываем 1-ю страницу
-      #pastday = Date.today
-pastday = DateTime.parse('2017-08-18T04:05:06+03:00')   #просто init
+      # pastday = Date.today
+      pastday = DateTime.now
       agent = Mechanize.new
       #page = agent.get("http://www.reuters.com/news/archive/marketsNews")
       page = agent.get(my_url)
       doc = Nokogiri::HTML(page.body)
       div_block_article = doc.css("div[class=story-content]")
+      #1.1 цикл обработки массива анонсов
       div_block_article.each do |link|
         href_view = link.css("a").first['href']
         name_view = link.css("h3").first.text.strip
@@ -29,12 +34,14 @@ pastday = DateTime.parse('2017-08-18T04:05:06+03:00')   #просто init
         end #if my_file(href_view)
       pastday = DateTime.parse(time_view)
       end #div_block_article.each do |link|
+      ##1.1
       ##1
 
       #2 цикл для обработки последующих страниц
       #target_date = Date.today
-target_date = DateTime.parse('2017-01-01T00:00:00+03:00')   #просто init
-      target_date = @bands_last.bn_date
+      #target_date = DateTime.now
+      #target_date = @bands_end.bn_date
+      target_date = DateTime.parse("2017-08-17 10:33:00")
       link_next = page.links.find { |l| l.text =~ /Earlier/ }
       until pastday < target_date
         page = link_next.click
@@ -51,7 +58,7 @@ target_date = DateTime.parse('2017-01-01T00:00:00+03:00')   #просто init
             band.save
           end
           pastday = DateTime.parse(time_view)
-        end
+        end #div_block_article.each do |link|
         link_next = page.links.find { |l| l.text =~ /Earlier/ }
         break if link_next == nil
       end # until pastday < target_date

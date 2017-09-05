@@ -57,7 +57,7 @@ target_date = DateTime.parse('2017-01-01T00:00:00+03:00')   #просто init
       end # until pastday < target_date
       ##2
     end #rtrs_url.each do |my_url|
-    redirect_to bands_path
+    redirect_to bands_path	#bands#index
   end # def new
 
   def edit

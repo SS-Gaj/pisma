@@ -3,7 +3,9 @@
 <%# @para = "AAA" %>
 <% @mas_p.each do |elem| %>
   <p><%#= link_to elem, new_overlook_path %></p>
-  <p><%= link_to elem, new_overlook_path %></p>
-  <% @para = elem %>
+  <p><%= link_to elem, new_overlook_path, data: { confirm: "Are you sure?" } %></p>
   <p><%= @para %></p>
 <% end %>
+
+
+

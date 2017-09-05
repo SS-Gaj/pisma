@@ -1,6 +1,6 @@
 Pisma::Application.routes.draw do
 resources :bands
-
+resources :overlooks
 #170814  match '/show',    to: 'bands#show',    via: 'get' 
   # get "bands/index"
 #170814	match '/bands',    to: 'bands#index',    via: 'get'

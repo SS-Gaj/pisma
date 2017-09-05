@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170811132134) do
+ActiveRecord::Schema.define(version: 20170830133314) do
 
   create_table "bands", force: true do |t|
     t.string   "bn_head"
@@ -24,5 +24,12 @@ ActiveRecord::Schema.define(version: 20170811132134) do
 
   add_index "bands", ["bn_date"], name: "index_bands_on_bn_date"
   add_index "bands", ["created_at"], name: "index_bands_on_created_at"
+
+  create_table "overlooks", force: true do |t|
+    t.date     "lk_date"
+    t.string   "lk_file"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end

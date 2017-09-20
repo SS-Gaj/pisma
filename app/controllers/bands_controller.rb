@@ -4,7 +4,8 @@ class BandsController < ApplicationController
 		@bands = Band.paginate(page: params[:page])
   end
 
-  def new
+  def new #здесь читается сайт reuters по заданным разделам - rtrs_url, и извлекаются анонсы, у которых url содержит шаблон из my_file.
+    #Эти анонсы добавляются в БД Band и образуют ленту новостей, которая выводится по пункту меню "Новости" 
     #REUTERS_HOME = 'http://www.reuters.com/'
 @bands_last = Band.first
     rtrs_url = ["http://www.reuters.com/news/archive/marketsNews", "http://www.reuters.com/news/archive/hotStocksNews", "http://www.reuters.com/news/archive/businessNews", "http://www.reuters.com/news/archive/ousivMolt", "http://www.reuters.com/news/archive/hongkongMktRpt"]

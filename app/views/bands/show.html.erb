@@ -3,4 +3,5 @@
 <% @mas_p.each do |elem| %>
   <p><%= elem %></p>
 <% end %>
-
+<%#= link_to "Save-file-txt", savefile_band_path(band) %>
+<%= link_to "Save-file-txt", controller: "bands", action: "savefile", id: @band %>

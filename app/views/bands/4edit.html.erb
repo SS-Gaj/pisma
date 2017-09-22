@@ -1,8 +1,10 @@
 <h3><%= @div_article_header %></h3>
 <p><%= @div_date %></p>
-  <p><%= @@para1 = @mas_p[1] %></p>
+<%# @para = "AAA" %>
 <% @mas_p.each do |elem| %>
+  <p><%#= link_to elem, new_overlook_path %></p>
   <p><%= link_to elem, new_overlook_path %></p>
-  <% @@para = elem %>
-  <p><%= @@para %></p>
+  <%# @para = elem %>
+  <% @para = @mas_p[10] %>
+  <p><%= @para %></p>
 <% end %>

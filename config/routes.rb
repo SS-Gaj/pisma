@@ -1,5 +1,8 @@
 Pisma::Application.routes.draw do
-resources :bands
+resources :bands do
+  #get 'savefile', on: :collection
+  get 'savefile', on: :member
+end
 resources :overlooks
 #170814  match '/show',    to: 'bands#show',    via: 'get' 
   # get "bands/index"

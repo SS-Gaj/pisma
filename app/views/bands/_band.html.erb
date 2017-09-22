@@ -8,6 +8,7 @@
     <%= time_ago_in_words(band.bn_date) %> ago;
 	  <%#= link_to "Прочитать", band %>
 	  <%= link_to "Прочитать", band_path(band) %>
+	  <%= link_to "Save-file-txt", savefile_band_path(band) %>
 	  <%= link_to "Обработать", edit_band_path(band) %>
   </span>
 </li>

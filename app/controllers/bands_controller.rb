@@ -4,7 +4,7 @@ class BandsController < ApplicationController
 		@bands = Band.paginate(page: params[:page])
   end
 
-  def new #здесь читается сайт reuters по заданным разделам - rtrs_url, и извлекаются анонсы, у которых url содержит шаблон из my_file.
+  def new #"Обновить" здесь читается сайт reuters по заданным разделам - rtrs_url, и извлекаются анонсы, у которых url содержит шаблон из my_file.
     #Эти анонсы добавляются в БД Band и образуют ленту новостей, которая выводится по пункту меню "Новости" 
     #REUTERS_HOME = 'http://www.reuters.com/'
 @bands_last = Band.first
@@ -61,7 +61,7 @@ target_date = DateTime.parse('2017-01-01T00:00:00+03:00')   #просто init
     redirect_to bands_path	#bands#index
   end # def new
 
-  def edit
+  def edit	#"Обработать"
 	  @band = Band.find(params[:id])
     agent = Mechanize.new
     page = agent.get("http://www.reuters.com"+@band.bn_url)
@@ -77,7 +77,7 @@ target_date = DateTime.parse('2017-01-01T00:00:00+03:00')   #просто init
     @mas_p = mas_glob
   end
 
-  def show
+  def show	#"Просмотреть"
 	  @band = Band.find(params[:id])
     agent = Mechanize.new
     page = agent.get("http://www.reuters.com"+@band.bn_url)
@@ -95,6 +95,38 @@ target_date = DateTime.parse('2017-01-01T00:00:00+03:00')   #просто init
 
   def destroy
   end
+
+  def savefile	#“Save-file-txt”
+target_date = DateTime.parse('2017-09-23T04:05:06+03:00')   #просто init
+	  @band = Band.find(params[:id])
+	  # start scrabing
+    agent = Mechanize.new
+    page = agent.get("http://www.reuters.com"+@band.bn_url)
+    doc = Nokogiri::HTML(page.body)
+    div_all_page = doc.css("div[class=inner-container]")
+    @div_article_header = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y] h1").text
+    @div_date = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y]").css("div[class=ArticleHeader_date_V9eGk]").text
+    target_date = Date.new(DateTime.parse(@div_date).year, DateTime.parse(@div_date).mon, DateTime.parse(@div_date).day)
+    name_file = dir_save_file(target_date) + name_save_file(@band.bn_url, @div_date)  #def name_save_file locate down; def dir_save_file in application_controller.rb
+  unless File.exist?(name_file)
+		f = File.new(name_file, 'w')
+	  f << @div_article_header + "\n"
+	  f << @div_date + "\n"
+#debug
+    article = div_all_page.css("div[class=ArticleBody_body_2ECha] p")
+    article.each do |elem|
+	    f << elem.text.gsub("\n", " ") + "\n"
+    end # article.each do |elem|
+	  # start save file
+		f.close
+
+	end # unless File.exist?(name_file)
+	  # end save file
+	#render layout: false
+  redirect_to bands_path	#bands#index
+	#redirect_back(fallback_location: root_path)
+  #render body: "raw"
+  end	#def savefile	#“Save-file-txt”
 
   private
 
@@ -120,4 +152,35 @@ target_date = DateTime.parse('2017-01-01T00:00:00+03:00')   #просто init
 	    end
 	     return name_file
 	  end # def my_file (mas)
+
+    def name_save_file (url, url_date) # used hier
+      if url =~ /usa-stocks/
+        name_file = 'usa-'
+      elsif url =~ /global-markets/
+        name_file = 'global-'
+      elsif url =~ /japan-stocks/
+        name_file = 'japan-'
+      elsif url =~ /hongkong/
+        name_file = 'hongkong-'
+      elsif url =~ /china/
+        name_file = 'china-'
+      elsif url =~ /europe-stocks/
+        name_file = 'europe-'
+      elsif url =~ /european-shares/
+        name_file = 'europe-'
+      elsif url =~ /oil-/
+        name_file = 'oil-'
+      else
+        name_file = 'othe-'
+      end
+      if url =~ /midday/
+        name_file = name_file + 'midday-'
+      elsif url =~ /close/
+        name_file = name_file + 'close-'
+      else
+      end
+name_file = '/bn-' + name_file + DateTime.parse(url_date).strftime("%y%m%d") + '-' + DateTime.parse(url_date).strftime("%H%M") + '.txt'
+      return name_file
+    end	#name_save_file
+
 end

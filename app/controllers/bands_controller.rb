@@ -75,7 +75,7 @@ target_date = DateTime.parse('2017-01-01T00:00:00+03:00')   #просто init
       mas_glob.push(elem.text.gsub("\n", " "))
     end
     @mas_p = mas_glob
-  end
+  end	#def edit	#"Обработать"
 
   def show	#"Просмотреть"
 	  @band = Band.find(params[:id])

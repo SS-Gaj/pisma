@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   @@para = "" #init variable used in app/views/bands/edit.html.erb
 	@@para1 = ""
+  @reuters_dir = '/home/ss/reuters'
   def dir_save_file (date_prezent)  # used in overlooks_controller.rb
   # puts "REUTERS_DIR = #{REUTERS_DIR}"
    	@mas_p = []
@@ -12,7 +13,8 @@ class ApplicationController < ActionController::Base
 	  dir_day = date_prezent.day.to_s
 	  #Dir.chdir(REUTERS_DIR)
 	  #REUTERS_DIR = '/home/ss/Documents/Reuters/index'
-	  Dir.chdir('/home/ss/Documents/Reuters')
+	  #Dir.chdir('/home/ss/Documents/Reuters')
+    Dir.chdir('/home/ss/reuters')
 	  Dir.mkdir(dir_year) unless File.directory?(dir_year)
 	  Dir.chdir(dir_year)
 	  Dir.mkdir(dir_mon) unless File.directory?(dir_mon)

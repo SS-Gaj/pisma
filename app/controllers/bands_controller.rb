@@ -109,10 +109,9 @@ target_date = DateTime.parse('2017-09-23T04:05:06+03:00')   #просто init
 
   div_all_page = doc_obrab.css("html")
   article = div_all_page.css("h3")
-  @article_header = article.first.text
+  @div_article_header = article.first.text
   @@div_date = article.last.text
-  #@article_header = div_all_page.css("h3").text
-  #@div_date = div_all_page.css("p").first.text
+  @@para1 =	@div_article_header
   article = div_all_page.css("p")
   mas_glob = []
   article.each do |elem|

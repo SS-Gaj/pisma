@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   @@para = "" #init variable used in app/views/bands/edit.html.erb
 	@@para1 = ""
+	@div_article_header = "111"
   @reuters_dir = '/home/ss/reuters'
   def dir_save_file (date_prezent)  # used in overlooks_controller.rb
   # puts "REUTERS_DIR = #{REUTERS_DIR}"

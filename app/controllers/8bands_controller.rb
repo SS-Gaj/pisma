@@ -62,64 +62,19 @@ target_date = DateTime.parse('2017-01-01T00:00:00+03:00')   #просто init
   end # def new
 
   def edit	#"Обработать"
-target_date = DateTime.parse('2017-09-23T04:05:06+03:00')   #просто init
 	  @band = Band.find(params[:id])
-	  # start scrabing
     agent = Mechanize.new
     page = agent.get("http://www.reuters.com"+@band.bn_url)
     doc = Nokogiri::HTML(page.body)
     div_all_page = doc.css("div[class=inner-container]")
     @div_article_header = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y] h1").text
     @div_date = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y]").css("div[class=ArticleHeader_date_V9eGk]").text
-    target_date = Date.new(DateTime.parse(@div_date).year, DateTime.parse(@div_date).mon, DateTime.parse(@div_date).day)
-    name_file = dir_save_file(target_date)
-    Dir.mkdir('obrab') unless File.directory?('obrab')
-	  Dir.chdir('obrab')
-    name_file = name_file + '/obrab'
-    if id_name = @band.bn_url =~ /id/
-      name_file = name_file + '/' + @band.bn_url[id_name, @band.bn_url.length-id_name]
-    else
-      name_file = name_file + '/id_no'    
-    end 
-    name_file = name_file + '.html'
-  unless File.exist?(name_file)
-		f = File.new(name_file, 'w')
-    f << "<!DOCTYPE html>"
-    f << "<html>"
-    f << "<head>"
-    f << "<title>Reuters | Обработать</title>"
-    #f << '<%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>'
-    #f << '<%= javascript_include_tag "application", "data-turbolinks-track" => true %>'
-    #f << "<%= csrf_meta_tags %>"
-    f << "</head>"
-    f << "<body>"
-    f << "<h3>" + @div_article_header + "</h3>"
-    f << "<h3>" + @div_date + "</h3>"
     article = div_all_page.css("div[class=ArticleBody_body_2ECha] p")
+    mas_glob = []
     article.each do |elem|
-	    f << "<p>" + elem.text.gsub("\n", " ") + "</p>"
-    end # article.each do |elem|
-    f << "</body>"
-    f << "</html>"
-	  # start save file
-		f.close
-	end # unless File.exist?(name_file)
-	  # end save file
-  doc_obrab = File.open(name_file) { |f| Nokogiri::XML(f) }
-
-  div_all_page = doc_obrab.css("html")
-  article = div_all_page.css("h3")
-  @article_header = article.first.text
-  @@div_date = article.last.text
-  #@article_header = div_all_page.css("h3").text
-  #@div_date = div_all_page.css("p").first.text
-  article = div_all_page.css("p")
-  mas_glob = []
-  article.each do |elem|
       mas_glob.push(elem.text.gsub("\n", " "))
     end
     @mas_p = mas_glob
-  # redirect_to bands_path	#bands#index
   end	#def edit	#"Обработать"
 
   def show	#"Просмотреть"

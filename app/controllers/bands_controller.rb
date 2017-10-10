@@ -74,7 +74,7 @@ target_date = DateTime.parse('2017-09-23T04:05:06+03:00')   #просто init
     target_date = Date.new(DateTime.parse(@div_date).year, DateTime.parse(@div_date).mon, DateTime.parse(@div_date).day)
     name_file = dir_save_file(target_date)
     Dir.mkdir('obrab') unless File.directory?('obrab')
-	  Dir.chdir('obrab')
+    Dir.chdir('obrab')
     name_file = name_file + '/obrab'
     if id_name = @band.bn_url =~ /id/
       name_file = name_file + '/' + @band.bn_url[id_name, @band.bn_url.length-id_name]
@@ -82,43 +82,47 @@ target_date = DateTime.parse('2017-09-23T04:05:06+03:00')   #просто init
       name_file = name_file + '/id_no'    
     end 
     name_file = name_file + '.html'
-  unless File.exist?(name_file)
-		f = File.new(name_file, 'w')
-    f << "<!DOCTYPE html>"
-    f << "<html>"
-    f << "<head>"
-    f << "<title>Reuters | Обработать</title>"
-    #f << '<%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>'
-    #f << '<%= javascript_include_tag "application", "data-turbolinks-track" => true %>'
-    #f << "<%= csrf_meta_tags %>"
-    f << "</head>"
-    f << "<body>"
-    f << "<h3>" + @div_article_header + "</h3>"
-    f << "<h3>" + @div_date + "</h3>"
-    article = div_all_page.css("div[class=ArticleBody_body_2ECha] p")
-    article.each do |elem|
-	    f << "<p>" + elem.text.gsub("\n", " ") + "</p>"
-    end # article.each do |elem|
-    f << "</body>"
-    f << "</html>"
-	  # start save file
-		f.close
-	end # unless File.exist?(name_file)
+    unless File.exist?(name_file)
+		  f = File.new(name_file, 'w')
+      f << "<!DOCTYPE html>"
+      f << "<html>"
+      f << "<head>"
+      f << "<title>Reuters | Обработать</title>"
+      #f << '<%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>'
+      #f << '<%= javascript_include_tag "application", "data-turbolinks-track" => true %>'
+      #f << "<%= csrf_meta_tags %>"
+      f << "</head>"
+      f << "<body>"
+      f << "<h3>" + @div_article_header + "</h3>"
+      f << "<h3>" + @div_date + "</h3>"
+      article = div_all_page.css("div[class=ArticleBody_body_2ECha] p")
+      article.each do |elem|
+	      f << "<p>" + elem.text.gsub("\n", " ") + "</p>"
+      end # article.each do |elem|
+      f << "</body>"
+      f << "</html>"
+	    # start save file
+		  f.close
+      # сохраняю имя файла в БД Overlook
+      overlook = Overlook.new(lk_date: target_date, lk_file: name_file)
+      overlook.save
+      # КОНЕЦ # сохраняю имя файла в БД Overlook
+   	end # unless File.exist?(name_file)
 	  # end save file
-  doc_obrab = File.open(name_file) { |f| Nokogiri::XML(f) }
-
-  div_all_page = doc_obrab.css("html")
-  article = div_all_page.css("h3")
-  @div_article_header = article.first.text
-  @@div_date = article.last.text
-  @@para1 =	@div_article_header
-  article = div_all_page.css("p")
-  mas_glob = []
-  article.each do |elem|
-      mas_glob.push(elem.text.gsub("\n", " "))
+    # читаю в Nokogiri тот же файл для вьюэра
+    @overlooks = Overlook.find_by_lk_file(name_file)	# позиционирую Active Record на файл (перекрывая и тот случай,когда файл создавался раньше)
+    doc_obrab = File.open(name_file) { |f| Nokogiri::XML(f) }
+    div_all_page = doc_obrab.css("html")
+    article = div_all_page.css("h3")
+    @div_article_header = article.first.text
+    @div_date = article.last.text
+    article = div_all_page.css("p")
+    mas_glob = []
+    article.each do |elem|
+        mas_glob.push(elem.text.gsub("\n", " "))
     end
     @mas_p = mas_glob
-  # redirect_to bands_path	#bands#index
+    # redirect_to bands_path	#bands#index
   end	#def edit	#"Обработать"
 
   def show	#"Просмотреть"

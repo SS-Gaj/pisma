@@ -105,10 +105,21 @@ target_date = DateTime.parse('2017-09-23T04:05:06+03:00')   #просто init
 		f.close
 	end # unless File.exist?(name_file)
 	  # end save file
-    #obrab_now = Obrab.new(name_file)
-    Obrab.new(name_file)
-#byebug
-  redirect_to new_overlook_path	#overlooks#new
+    obrab_now = Obrab.new(name_file)
+byebug
+  doc_obrab = File.open(name_file) { |f| Nokogiri::XML(f) }
+
+  div_all_page = doc_obrab.css("html")
+  article = div_all_page.css("h3")
+  @div_article_header = article.first.text
+  @@div_date = article.last.text
+  @@para1 =	@div_article_header
+  article = div_all_page.css("p")
+  mas_glob = []
+  article.each do |elem|
+      mas_glob.push(elem.text.gsub("\n", " "))
+    end
+    @mas_p = mas_glob
   # redirect_to bands_path	#bands#index
   end	#def edit	#"Обработать"
 

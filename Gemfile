@@ -15,12 +15,18 @@ group :development, :test do
   gem 'sqlite3', '1.3.8'
   gem 'rspec-rails', '2.13.1'
   gem 'childprocess', '~> 0.6.1'
+  gem 'gemspec_deps_gen', '~>1.1'
+  gem 'gemcutter', '~>0.7'
+  gem 'thor', '~> 0.19'
+  gem 'byebug'
+
 end
 
 group :test do
   gem 'selenium-webdriver', '2.35.1'
   gem 'capybara', '2.1.0'
   gem 'factory_girl_rails', '4.2.1'
+  gem 'awesome_print'
 end
 
 # Use SCSS for stylesheets
@@ -57,6 +63,10 @@ end
 gem 'mechanize', '~> 2.7', '>= 2.7.5'
 
 gem 'nokogiri', '~> 1.7', '>= 1.7.2'
+
+gem 'google-translate', '~> 1.1'
+gem 'json_pure', '~> 1.8'
+#gem 'resource_accessor', '~> 1.2'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'

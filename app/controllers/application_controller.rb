@@ -2,13 +2,10 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
-  @@para = "" #init variable used in app/views/bands/edit.html.erb
-	@@para1 = ""
-	@div_article_header = "111"
+  include OverlooksHelper
   @reuters_dir = '/home/ss/reuters'
   def dir_save_file (date_prezent)  # used in overlooks_controller.rb
   # puts "REUTERS_DIR = #{REUTERS_DIR}"
-   	@mas_p = []
 	  dir_year = date_prezent.year.to_s
 	  dir_mon = date_prezent.mon.to_s
 	  dir_day = date_prezent.day.to_s

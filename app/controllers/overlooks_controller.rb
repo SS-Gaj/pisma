@@ -1,5 +1,10 @@
 class OverlooksController < ApplicationController
 
+  def index
+    @overlooks = Overlook.paginate(page: params[:page])
+    #@overlooks = Overlook.all
+  end
+
 def new #переход из ленты новостей
 #создание нового файла "Обзор за ..." или вход в созданный ранее
 # + записывание заголовка "Обрабатываемой" статьи и времени публикации
@@ -14,6 +19,8 @@ def new #переход из ленты новостей
 	target_date = Date.today
 	name_lk = dir_save_file(target_date) + name_save_file(target_date)  #def dir_save_file и def name_save_file locate in application_controller.rb
 	unless File.exist?(name_lk)
+    overlook = Overlook.new(lk_date: target_date, lk_file: name_file)
+    overlook.save
 		f = File.new(name_lk, 'w')
     f << "<!DOCTYPE html>"
     f << "<html>"

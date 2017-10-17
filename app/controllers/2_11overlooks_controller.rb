@@ -1,7 +1,7 @@
 class OverlooksController < ApplicationController
 
 def new
-#byebug
+byebug
 end
 
 def edit	# из цепочки "Обработать"

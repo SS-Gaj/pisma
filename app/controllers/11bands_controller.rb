@@ -62,7 +62,7 @@ target_date = DateTime.parse('2017-01-01T00:00:00+03:00')   #просто init
   end # def new
 
   def edit	#"Обработать"
-#byebug
+byebug
 	  init_myvar  #init переменных для совместной работы bands_controller и overlooks_controller и их вьюэров
 target_date = DateTime.parse('2017-09-23T04:05:06+03:00')   #просто init
 	  @band = Band.find(params[:id])
@@ -124,10 +124,8 @@ target_date = DateTime.parse('2017-09-23T04:05:06+03:00')   #просто init
         mas_glob.push(elem.text.gsub("\n", " "))
     end
     @mas_p = mas_glob
-    @@file_obzor = name_file
 #byebug
     # redirect_to bands_path	#bands#index
-
 	redirect_to new_overlook_path	#overlooks#new
   end	#def edit	#"Обработать"
 

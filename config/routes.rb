@@ -3,7 +3,9 @@ resources :bands do
   #get 'savefile', on: :collection
   get 'savefile', on: :member
 end
-resources :overlooks
+resources :overlooks do
+  get 'append', on: :member
+end
 #170814  match '/show',    to: 'bands#show',    via: 'get' 
   # get "bands/index"
 #170814	match '/bands',    to: 'bands#index',    via: 'get'

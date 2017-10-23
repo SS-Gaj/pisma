@@ -113,6 +113,35 @@ target_date = DateTime.parse('2017-09-23T04:05:06+03:00')   #просто init
   end	#def edit	#"Обработать"
 
   def show	#"Просмотреть"
+#####
+    col_old = 1584
+    col_new = 1597
+byebug
+    record_id = col_new
+    tek_record = Band.find(record_id)
+    isx_head = tek_record.bn_head
+    isx_date = tek_record.bn_date
+    while record_id > col_old do
+      yes_no = false
+      record_id -= 1
+      tek_record = Band.find(record_id)
+      tek_head = tek_record.bn_head
+      tek_date = tek_record.bn_date
+      if tek_head.include? isx_head
+        yes_no = true
+      elsif isx_head.include? tek_head
+        yes_no = true
+      end #if tek_head.include? isx_head
+      if yes_no = true
+        if isx_date < tek_date
+          tek_record.destroy
+        else
+          isx_record = tek_record
+          isx_record.destroy
+        end #if isx_date < tek_date
+      end #if yes_no = true
+    end #while
+#####
 	  @band = Band.find(params[:id])
     agent = Mechanize.new
     page = agent.get("http://www.reuters.com"+@band.bn_url)
@@ -128,8 +157,9 @@ target_date = DateTime.parse('2017-09-23T04:05:06+03:00')   #просто init
     @mas_p = mas_glob
   end
 
-  def destroy
-  end
+  def destroy #"Раздуплить"
+#  	  @band = Band.find(params[:id])
+  end # def destroy
 
   def savefile	#“Save-file-txt”
 target_date = DateTime.parse('2017-09-23T04:05:06+03:00')   #просто init

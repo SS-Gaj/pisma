@@ -21,7 +21,7 @@ pastday = DateTime.parse('2017-08-18T04:05:06+03:00')   #просто init
       div_block_article.each do |link|
         href_view = link.css("a").first['href']
         name_view = link.css("h3").first.text.strip
-        time_view = link.css("time[class=article-time]").css("span[class=timestamp]").text
+        time_view = link.css("time[class=article-time]").css("span[class=timestamp]").first.text
         content_view = link.css("p").first.text.strip
         if my_file(href_view)
           band = Band.new(bn_head: name_view, novelty: content_view, 
@@ -33,9 +33,10 @@ pastday = DateTime.parse('2017-08-18T04:05:06+03:00')   #просто init
       ##1
 
       #2 цикл для обработки последующих страниц
-      #target_date = Date.today
-target_date = DateTime.parse('2017-01-01T00:00:00+03:00')   #просто init
-      target_date = @bands_last.bn_date
+      target_date = DateTime.now - 1  # сутки назад
+
+#target_date = DateTime.parse('2017-01-01T00:00:00+03:00')   #просто init
+      #target_date = @bands_last.bn_date
       link_next = page.links.find { |l| l.text =~ /Earlier/ }
       until pastday < target_date
         page = link_next.click
@@ -44,7 +45,7 @@ target_date = DateTime.parse('2017-01-01T00:00:00+03:00')   #просто init
         div_block_article.each do |link|
           href_view = link.css("a").first['href']
           name_view = link.css("h3").first.text.strip
-          time_view = link.css("time[class=article-time]").css("span[class=timestamp]").text
+          time_view = link.css("time[class=article-time]").css("span[class=timestamp]").first.text
           content_view = link.css("p").first.text.strip
           if my_file(href_view)
             band = Band.new(bn_head: name_view, novelty: content_view, 
@@ -113,35 +114,6 @@ target_date = DateTime.parse('2017-09-23T04:05:06+03:00')   #просто init
   end	#def edit	#"Обработать"
 
   def show	#"Просмотреть"
-#####
-    col_old = 1584
-    col_new = 1597
-byebug
-    record_id = col_new
-    tek_record = Band.find(record_id)
-    isx_head = tek_record.bn_head
-    isx_date = tek_record.bn_date
-    while record_id > col_old do
-      yes_no = false
-      record_id -= 1
-      tek_record = Band.find(record_id)
-      tek_head = tek_record.bn_head
-      tek_date = tek_record.bn_date
-      if tek_head.include? isx_head
-        yes_no = true
-      elsif isx_head.include? tek_head
-        yes_no = true
-      end #if tek_head.include? isx_head
-      if yes_no = true
-        if isx_date < tek_date
-          tek_record.destroy
-        else
-          isx_record = tek_record
-          isx_record.destroy
-        end #if isx_date < tek_date
-      end #if yes_no = true
-    end #while
-#####
 	  @band = Band.find(params[:id])
     agent = Mechanize.new
     page = agent.get("http://www.reuters.com"+@band.bn_url)
@@ -158,7 +130,9 @@ byebug
   end
 
   def destroy #"Раздуплить"
-#  	  @band = Band.find(params[:id])
+  	  @band = Band.find(params[:id])
+  	  @band.destroy
+  	  redirect_to bands_path	#bands#index
   end # def destroy
 
   def savefile	#“Save-file-txt”

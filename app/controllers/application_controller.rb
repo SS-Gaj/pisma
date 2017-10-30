@@ -23,6 +23,6 @@ class ApplicationController < ActionController::Base
   end	#my_dir
 
   def name_save_file (date_prezent) # used in overlooks_controller.rb
-     return '/lk-' + date_prezent.strftime("%y%m%d") + '.html'
+     return '/lk-' + date_prezent.strftime("%y%m%d") + '.xml'
   end	#my_file
 end

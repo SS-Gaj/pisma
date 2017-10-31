@@ -53,15 +53,6 @@ def new #переход из ленты новостей после нажати
     atime.content = @div_date
     nodes.last.add_next_sibling(atime)
 
-    #nodes = @doc_f.css "day, ahead, atime, p"    
-    nodes = @doc_f.css "day, article"
-    article = Nokogiri::XML::Node.new "article", @doc_f
-    article.content = ""
-    nodes.last.add_next_sibling(article)
-# h1.parent = div  # div становится "родителем" h1
-    ahead.parent = article
-    atime.parent = article
-
     f << @doc_f
 #debug
 		f.close
@@ -86,7 +77,7 @@ def edit	# при нажатии "Copy"
 	name_lk = dir_save_file(target_date) + name_save_file(target_date)  #def dir_save_file и def name_save_file locate in application_controller.rb
 	if File.exist?(name_lk)
    @doc_f = File.open(name_lk) { |f| Nokogiri::XML(f) }
-   nodes = @doc_f.css "ahead, atime, p"
+   nodes = @doc_f.css "day, ahead, atime, p"
    f = File.new(name_lk, 'w')
     p = Nokogiri::XML::Node.new "p", @doc_f
     p.content = @mas_p[params[:id].to_i]
@@ -101,11 +92,9 @@ end #edit
 
   def show  #кнопка "Просмотреть" из страницы "Обзор за..."
     @overlook = Overlook.find(params[:id])
-    name_lk = @overlook.lk_file
-    if File.exist?(name_lk)
-      @doc_f = File.open(name_lk) { |f| Nokogiri::XML(f) }
-      @article_mas = @doc_f.css "article"
-    end # if File.exist?(name_lk)
+    #name_file = @overlook.lk_file
+    #render "band/index"
+    #redirect_to bands_path	#bands#index
   end
 
   def append

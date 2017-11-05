@@ -1,6 +1,7 @@
 Pisma::Application.routes.draw do
 resources :bands do
   #get 'savefile', on: :collection
+  get 'double', on: :new
   get 'savefile', on: :member
 end
 resources :overlooks do

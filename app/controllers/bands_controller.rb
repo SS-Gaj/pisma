@@ -8,7 +8,7 @@ class BandsController < ApplicationController
     #Эти анонсы добавляются в БД Band и образуют ленту новостей, которая выводится по пункту меню "Новости" 
     #REUTERS_HOME = 'http://www.reuters.com/'
 @bands_last = Band.first
-    rtrs_url = ["http://www.reuters.com/news/archive/marketsNews", "http://www.reuters.com/news/archive/hotStocksNews", "http://www.reuters.com/news/archive/businessNews", "http://www.reuters.com/news/archive/ousivMolt", "http://www.reuters.com/news/archive/hongkongMktRpt"]
+    rtrs_url = ["http://www.reuters.com/news/archive/marketsNews", "http://www.reuters.com/news/archive/hotStocksNews", "http://www.reuters.com/news/archive/businessNews", "http://www.reuters.com/news/archive/ousivMolt", "http://www.reuters.com/news/archive/hongkongMktRpt", "http://www.reuters.com/news/archive/londonMktRpt"]
     rtrs_url.each do |my_url|
       #1 обрабатываем 1-ю страницу
       #pastday = Date.today
@@ -166,6 +166,52 @@ target_date = DateTime.parse('2017-09-23T04:05:06+03:00')   #просто init
 	#redirect_back(fallback_location: root_path)
   #render body: "raw"
   end	#def savefile	#“Save-file-txt”
+
+  def double #удаление задвоенных статей - кнопка "Раздуплить"
+    #col_old = 1948
+    #col_new = 1980
+    #col_new = Band.count
+    col_new = Band.first.id
+    col_old = col_new - 50
+
+    while col_new > col_old - 1
+  #byebug
+      record_id = col_new
+      if Band.exists?(record_id)
+        isx_record = Band.find(record_id)
+        isx_head = isx_record.bn_head
+        isx_date = isx_record.bn_date
+        while record_id > col_old - 1 do
+          yes_no = false
+          record_id -= 1
+          if Band.exists?(record_id)
+            tek_record = Band.find(record_id)
+            tek_head = tek_record.bn_head
+            tek_date = tek_record.bn_date
+            if tek_head.include? isx_head
+              yes_no = true
+            elsif isx_head.include? tek_head
+              yes_no = true
+            end #if tek_head.include? isx_head
+            if yes_no = true
+              if isx_date > tek_date
+                tek_record.destroy
+              else
+                new_isx_record = tek_record
+                isx_record.destroy
+                isx_record = new_isx_record
+                isx_head = new_isx_record.bn_head
+                isx_date = new_isx_record.bn_date
+              end #if isx_date < tek_date
+            end #if yes_no = true
+          end #if Band.exists?(record_id)
+        end #while record_id > col_old
+      end #if Band.exists?(record_id)
+      col_new -= 1
+    end #while col_new > col_old
+  ####
+    redirect_to bands_path	#bands#index
+  end #def double
 
   private
 

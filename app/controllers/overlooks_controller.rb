@@ -96,7 +96,11 @@ def edit	# при нажатии "Copy"
 		f.close
 	end # if File.exist?(name_lk)
 #byebug
+#byebug
 	render "new"
+	# redirect_to overlook_path(overlook)
+	# redirect_back(fallback_location: root_path)
+	# redirect_back
 end #edit
 
   def show  #кнопка "Просмотреть" из страницы "Обзор за..."

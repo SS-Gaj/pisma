@@ -21,7 +21,7 @@ def new #переход из ленты новостей после нажати
   end
   #формирование имени файла "Обзор за ..."
   target_date = Date.new(DateTime.parse(@div_date).year, DateTime.parse(@div_date).mon, DateTime.parse(@div_date).day)
-	name_lk = dir_save_file(target_date) + name_save_file(target_date, '/lk-')  #def  in application_controller.rb
+	 name_lk = dir_save_file(target_date) + name_save_file(target_date, '/lk-', '.xml')  #def dir_save_file и def name_save_file locate in 
 #byebug
 	unless File.exist?(name_lk)
     overlook = Overlook.new(lk_date: target_date, lk_file: name_lk)
@@ -83,7 +83,7 @@ def edit	# при нажатии "Copy"
   end
   #target_date = Date.today
   target_date = Date.new(DateTime.parse(@div_date).year, DateTime.parse(@div_date).mon, DateTime.parse(@div_date).day)
-	name_lk = dir_save_file(target_date) + name_save_file(target_date, '/lk-')  #def in 	
+	 name_lk = dir_save_file(target_date) + name_save_file(target_date, '/lk-', '.xml')  #def dir_save_file и def name_save_file locate in 
 	if File.exist?(name_lk)
    @doc_f = File.open(name_lk) { |f| Nokogiri::XML(f) }
    nodes = @doc_f.css "ahead, atime, p"

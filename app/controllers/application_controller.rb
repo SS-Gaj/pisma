@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
 	  return Dir.pwd
   end	#my_dir
 
-  def name_save_file (date_prezent, prefix) # used in overlooks_controller.rb
-     return  prefix + date_prezent.strftime("%y%m%d") + '.xml' #'/lk-'
+  def name_save_file (date_prezent, prefix, type) # used in overlooks_controller.rb and reviews_controller.rb
+    return  prefix + date_prezent.strftime("%y%m%d") + type #'/lk-' '.xml'
   end	#my_file
 end

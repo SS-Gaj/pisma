@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Rw date:</strong>
+  <%= @review.rw_date %>
+</p>
+
+<p>
+  <strong>Rw file:</strong>
+  <%= @review.rw_file %>
+</p>
+
+<%= link_to 'Edit', edit_review_path(@review) %> |
+<%= link_to 'Back', reviews_path %>

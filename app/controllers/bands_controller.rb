@@ -8,7 +8,14 @@ class BandsController < ApplicationController
     #Эти анонсы добавляются в БД Band и образуют ленту новостей, которая выводится по пункту меню "Новости" 
     #REUTERS_HOME = 'http://www.reuters.com/'
 @bands_last = Band.first
-    rtrs_url = ["http://www.reuters.com/news/archive/marketsNews", "http://www.reuters.com/news/archive/hotStocksNews", "http://www.reuters.com/news/archive/businessNews", "http://www.reuters.com/news/archive/ousivMolt", "http://www.reuters.com/news/archive/hongkongMktRpt", "http://www.reuters.com/news/archive/londonMktRpt"]
+    rtrs_url = [
+"http://www.reuters.com/news/archive/marketsNews", 
+"http://www.reuters.com/news/archive/hotStocksNews", 
+"http://www.reuters.com/news/archive/businessNews", 
+"http://www.reuters.com/news/archive/ousivMolt", 
+"http://www.reuters.com/news/archive/hongkongMktRpt", 
+"http://www.reuters.com/news/archive/londonMktRpt", 
+]
     rtrs_url.each do |my_url|
       #1 обрабатываем 1-ю страницу
       #pastday = Date.today
@@ -38,7 +45,7 @@ pastday = DateTime.parse('2017-08-18T04:05:06+03:00')   #просто init
 #target_date = DateTime.parse('2017-01-01T00:00:00+03:00')   #просто init
       #target_date = @bands_last.bn_date
       link_next = page.links.find { |l| l.text =~ /Earlier/ }
-      until pastday < target_date
+      until pastday < target_date # если неправда, что время статьи меньше заданного (т.е.если неправда, что статья напечатана раньше, чем заданное время)
         page = link_next.click
         doc = Nokogiri::HTML(page.body)
         div_block_article = doc.css("div[class=story-content]")
@@ -129,7 +136,7 @@ target_date = DateTime.parse('2017-09-23T04:05:06+03:00')   #просто init
     @mas_p = mas_glob
   end
 
-  def destroy #"Раздуплить"
+  def destroy #"Удалить" 
   	  @band = Band.find(params[:id])
   	  @band.destroy
   	  redirect_to bands_path	#bands#index
@@ -173,7 +180,7 @@ target_date = DateTime.parse('2017-09-23T04:05:06+03:00')   #просто init
     #col_new = Band.count
     col_new = Band.first.id
     col_old = col_new - 50
-
+    #col_old = 1
     while col_new > col_old - 1
   #byebug
       record_id = col_new

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170830133314) do
+ActiveRecord::Schema.define(version: 20171107164110) do
 
   create_table "bands", force: true do |t|
     t.string   "bn_head"
@@ -28,6 +28,13 @@ ActiveRecord::Schema.define(version: 20170830133314) do
   create_table "overlooks", force: true do |t|
     t.date     "lk_date"
     t.string   "lk_file"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "reviews", force: true do |t|
+    t.date     "rw_date"
+    t.string   "rw_file"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

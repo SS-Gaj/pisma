@@ -1,4 +1,6 @@
 Pisma::Application.routes.draw do
+  resources :reviews
+
 resources :bands do
   #get 'savefile', on: :collection
   get 'double', on: :new

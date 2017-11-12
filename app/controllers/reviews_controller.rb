@@ -15,25 +15,11 @@ class ReviewsController < ApplicationController
   # GET /reviews/new
   def new
     target_date = Date.today
-    name_rw = dir_save_file(target_date) + name_save_file(target_date, '/rw-')  #def in application_controller.rb
-	  unless File.exist?(name_rw)
-      #overlook = Overlook.new(lk_date: target_date, lk_file: name_rw)
-      @review = Review.new(rw_date: target_date, rw_file: name_rw)
-      @review.save
-		  f = File.new(name_rw, 'w')
-		  @doc_f = Nokogiri::HTML::Document.parse <<-EOHTML
-          <root>
-            <day> Статья за </day>
-          </root>
-      EOHTML
-      day = @doc_f.at_css "day"
-      day.content = "Статья за " + target_date.strftime("%Y%m%d")
-      #nodes = @doc_f.css "h1"
-      #nodes.wrap("<div class='container'></div>")
-      f << @doc_f
-      f.close
-	  end # unless File.exist?(name_rw)
-
+    name_rw = dir_save_file(target_date) + name_save_file(target_date, '/rw-', '.txt')  #def in application_controller.rb
+    article_rw = "Олександр Скляр"
+    @review = Review.new(rw_date: target_date, rw_file: name_rw, rw_article: article_rw)
+    @review.save
+      
   end #def new
 
   # GET /reviews/1/edit
@@ -88,6 +74,6 @@ class ReviewsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def review_params
-      params.require(:review).permit(:rw_date, :rw_file)
+      params.require(:review).permit(:rw_date, :rw_file, :rw_article, :rw_title)
     end
 end

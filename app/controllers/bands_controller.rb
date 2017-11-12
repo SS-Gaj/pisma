@@ -90,7 +90,7 @@ target_date = DateTime.parse('2017-09-23T04:05:06+03:00')   #просто init
       name_file = name_file + '/id_no'    
     end 
     name_file = name_file + '.html'
-  unless File.exist?(name_file)
+  #unless File.exist?(name_file)
 		f = File.new(name_file, 'w')
     f << "<!DOCTYPE html>"
     f << "<html>"
@@ -111,7 +111,7 @@ target_date = DateTime.parse('2017-09-23T04:05:06+03:00')   #просто init
     f << "</html>"
 	  # start save file
 		f.close
-  end # unless File.exist?(name_file)
+  #end # unless File.exist?(name_file)
 	  # end save file
     #obrab_now = Obrab.new(name_file)
     Obrab.new(name_file)

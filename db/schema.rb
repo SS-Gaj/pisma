@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171107164110) do
+ActiveRecord::Schema.define(version: 20171111152703) do
 
   create_table "bands", force: true do |t|
     t.string   "bn_head"
@@ -37,6 +37,8 @@ ActiveRecord::Schema.define(version: 20171107164110) do
     t.string   "rw_file"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "rw_article"
+    t.string   "rw_title"
   end
 
 end

@@ -144,3 +144,15 @@ aside {
   }
 }
 
+/* article */
+
+.box_article {
+    height: 100px;
+    width: 500px;
+    border-style: dotted;
+    overflow-y: scroll;
+}
+#title_article {
+    width: 500px;
+}
+

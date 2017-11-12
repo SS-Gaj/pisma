@@ -10,5 +10,15 @@
   <%= @review.rw_file %>
 </p>
 
+<p>
+  <strong>Rw title:</strong>
+  <%= @review.rw_title %>
+</p>
+
+<p>
+  <strong>Rw article:</strong>
+  <%= @review.rw_article %>
+</p>
+
 <%= link_to 'Edit', edit_review_path(@review) %> |
 <%= link_to 'Back', reviews_path %>

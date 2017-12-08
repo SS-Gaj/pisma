@@ -152,7 +152,15 @@ aside {
     border-style: dotted;
     overflow-y: scroll;
 }
+
 #title_article {
     width: 500px;
+}
+
+/*I moved it from scaffolds.css.scss*/
+div {
+  &.field, &.actions {
+    margin-bottom: 10px;
+  }
 }
 

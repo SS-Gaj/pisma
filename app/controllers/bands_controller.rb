@@ -237,6 +237,8 @@ target_date = DateTime.parse('2017-09-23T04:05:06+03:00')   #просто init
 	      name_file = true
 	    elsif mas =~ /europe-stocks/
 	      name_file = true
+	    elsif mas =~ /bitcoin/
+	      name_file = true
 	    elsif mas =~ /opec|oil/
 	      name_file = true
 	    else
@@ -246,7 +248,9 @@ target_date = DateTime.parse('2017-09-23T04:05:06+03:00')   #просто init
 	  end # def my_file (mas)
 
     def name_save_file (url, url_date) # used hier
-      if url =~ /usa-stocks/
+      if url =~ /bitcoin/
+        name_file = 'bitcoin-'
+      elsif url =~ /usa-stocks/
         name_file = 'usa-'
       elsif url =~ /global-markets/
         name_file = 'global-'

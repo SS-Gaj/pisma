@@ -5,6 +5,7 @@ resources :bands do
   #get 'savefile', on: :collection
   get 'double', on: :new
   get 'savefile', on: :member
+  get 'china', on: :member
 end
 resources :overlooks do
   get 'append', on: :member

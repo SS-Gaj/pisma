@@ -125,12 +125,10 @@ target_date = DateTime.parse('2017-09-23T04:05:06+03:00')   #просто init
     agent = Mechanize.new
     page = agent.get("http://www.reuters.com"+@band.bn_url)
     doc = Nokogiri::HTML(page.body)
-#   div_all_page = doc.css("div[class=inner-container]")
-    div_all_page = doc.css("div[class=renderable]")
+    div_all_page = doc.css("div[class=inner-container]")
     @div_article_header = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y] h1").text
     @div_date = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y]").css("div[class=ArticleHeader_date_V9eGk]").text
-#   article = div_all_page.css("div[class=ArticleBody_body_2ECha] p")
-    article = div_all_page.css("div[class=StandardArticleBody_body_1gnLA] p")
+    article = div_all_page.css("div[class=ArticleBody_body_2ECha] p")
     mas_glob = []
     article.each do |elem|
       mas_glob.push(elem.text.gsub("\n", " "))
@@ -151,8 +149,7 @@ target_date = DateTime.parse('2017-09-23T04:05:06+03:00')   #просто init
     agent = Mechanize.new
     page = agent.get("http://www.reuters.com"+@band.bn_url)
     doc = Nokogiri::HTML(page.body)
-#    div_all_page = doc.css("div[class=inner-container]")
-    div_all_page = doc.css("div[class=renderable]")
+    div_all_page = doc.css("div[class=inner-container]")
     @div_article_header = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y] h1").text
     @div_date = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y]").css("div[class=ArticleHeader_date_V9eGk]").text
     target_date = Date.new(DateTime.parse(@div_date).year, DateTime.parse(@div_date).mon, DateTime.parse(@div_date).day)
@@ -162,9 +159,7 @@ target_date = DateTime.parse('2017-09-23T04:05:06+03:00')   #просто init
 	  f << @div_article_header + "\n"
 	  f << @div_date + "\n"
 #debug
-#   article = div_all_page.css("div[class=ArticleBody_body_2ECha] p")
-    article = div_all_page.css("div[class=StandardArticleBody_body_1gnLA] p")
-
+    article = div_all_page.css("div[class=ArticleBody_body_2ECha] p")
     article.each do |elem|
 	    f << elem.text.gsub("\n", " ") + "\n"
     end # article.each do |elem|
@@ -232,8 +227,7 @@ target_date = DateTime.parse('2017-09-23T04:05:06+03:00')   #просто init
     agent = Mechanize.new
     page = agent.get("http://www.reuters.com"+@band.bn_url)
     doc = Nokogiri::HTML(page.body)
-#    div_all_page = doc.css("div[class=inner-container]")
-    div_all_page = doc.css("div[class=renderable]")
+    div_all_page = doc.css("div[class=inner-container]")
     @div_article_header = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y] h1").text
     @div_date = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y]").css("div[class=ArticleHeader_date_V9eGk]").text
     target_date = Date.new(DateTime.parse(@div_date).year, DateTime.parse(@div_date).mon, DateTime.parse(@div_date).day)
@@ -260,8 +254,7 @@ target_date = DateTime.parse('2017-09-23T04:05:06+03:00')   #просто init
     f << "<body>"
     f << "<h3>" + @div_article_header + "</h3>"
     f << "<h3>" + @div_date + "</h3>"
-#   article = div_all_page.css("div[class=ArticleBody_body_2ECha] p")
-    article = div_all_page.css("div[class=StandardArticleBody_body_1gnLA] p")
+    article = div_all_page.css("div[class=ArticleBody_body_2ECha] p")
     article.each do |elem|
       elem_text = elem.text.gsub("\n", " ")
       mas = []

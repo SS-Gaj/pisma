@@ -82,18 +82,80 @@ pastday = DateTime.parse('2017-08-18T04:05:06+03:00')   #просто init
   end # def new
 
   def edit	#"Обработать"
+
+target_date = DateTime.parse('2017-09-23T04:05:06+03:00')   #просто init
 	  @band = Band.find(params[:id])
-    #editor(@band.bn_url)     
-    #Obrab.new(name_file)
-    Obrab.new(editor(@band.bn_url))
-   #byebug
-    redirect_to new_overlook_path	#overlooks#new
-   #redirect_to bands_path	#bands#index
+	  # start scrabing
+    agent = Mechanize.new
+    page = agent.get("http://www.reuters.com"+@band.bn_url)
+    doc = Nokogiri::HTML(page.body)
+#    div_all_page = doc.css("div[class=inner-container]")
+    div_all_page = doc.css("div[class=renderable]")
+    @div_article_header = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y] h1").text
+    @div_date = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y]").css("div[class=ArticleHeader_date_V9eGk]").text
+    target_date = Date.new(DateTime.parse(@div_date).year, DateTime.parse(@div_date).mon, DateTime.parse(@div_date).day)
+    name_file = dir_save_file(target_date)
+    Dir.mkdir('obrab') unless File.directory?('obrab')
+	  Dir.chdir('obrab')
+    name_file = name_file + '/obrab'
+    if id_name = @band.bn_url =~ /id/
+      name_file = name_file + '/' + @band.bn_url[id_name, @band.bn_url.length-id_name]
+    else
+      name_file = name_file + '/id_no'    
+    end 
+    name_file = name_file + '.html'
+  #unless File.exist?(name_file)
+		f = File.new(name_file, 'w')
+    f << "<!DOCTYPE html>"
+    f << "<html>"
+    f << "<head>"
+    f << "<title>Reuters | Обработать</title>"
+    #f << '<%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>'
+    #f << '<%= javascript_include_tag "application", "data-turbolinks-track" => true %>'
+    #f << "<%= csrf_meta_tags %>"
+    f << "</head>"
+    f << "<body>"
+    f << "<h3>" + @div_article_header + "</h3>"
+    f << "<h3>" + @div_date + "</h3>"
+#   article = div_all_page.css("div[class=ArticleBody_body_2ECha] p")
+    article = div_all_page.css("div[class=StandardArticleBody_body_1gnLA] p")
+    article.each do |elem|
+      elem_text = elem.text.gsub("\n", " ")
+      mas = []
+      mas = elem_text.split('**')
+      mas.each do |para|
+	      f << "<p>" + para + "</p>"
+	    end #mas.each do |para|
+    end # article.each do |elem|
+    f << "</body>"
+    f << "</html>"
+	  # start save file
+		f.close
+  #end # unless File.exist?(name_file)
+	  # end save file
+    #obrab_now = Obrab.new(name_file)
+    Obrab.new(name_file)
+#byebug
+  redirect_to new_overlook_path	#overlooks#new
+  # redirect_to bands_path	#bands#index
   end	#def edit	#"Обработать"
 
   def show	#"Просмотреть"
 	  @band = Band.find(params[:id])
-	  @mas_p = reader(@band.bn_url)
+    agent = Mechanize.new
+    page = agent.get("http://www.reuters.com"+@band.bn_url)
+    doc = Nokogiri::HTML(page.body)
+#   div_all_page = doc.css("div[class=inner-container]")
+    div_all_page = doc.css("div[class=renderable]")
+    @div_article_header = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y] h1").text
+    @div_date = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y]").css("div[class=ArticleHeader_date_V9eGk]").text
+#   article = div_all_page.css("div[class=ArticleBody_body_2ECha] p")
+    article = div_all_page.css("div[class=StandardArticleBody_body_1gnLA] p")
+    mas_glob = []
+    article.each do |elem|
+      mas_glob.push(elem.text.gsub("\n", " "))
+    end
+    @mas_p = mas_glob
   end
 
   def destroy #"Удалить" 
@@ -110,12 +172,38 @@ pastday = DateTime.parse('2017-08-18T04:05:06+03:00')   #просто init
   end # def destroy
 
   def savefile	#“Save-file-txt”
- 	  @band = Band.find(params[:id])
-    wrieter(@band.bn_url)      
-	  #render layout: false
-    redirect_to bands_path	#bands#index
-	  #redirect_back(fallback_location: root_path)
-    #render body: "raw"
+target_date = DateTime.parse('2017-09-23T04:05:06+03:00')   #просто init
+	  @band = Band.find(params[:id])
+	  # start scrabing
+    agent = Mechanize.new
+    page = agent.get("http://www.reuters.com"+@band.bn_url)
+    doc = Nokogiri::HTML(page.body)
+#    div_all_page = doc.css("div[class=inner-container]")
+    div_all_page = doc.css("div[class=renderable]")
+    @div_article_header = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y] h1").text
+    @div_date = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y]").css("div[class=ArticleHeader_date_V9eGk]").text
+    target_date = Date.new(DateTime.parse(@div_date).year, DateTime.parse(@div_date).mon, DateTime.parse(@div_date).day)
+    name_file = dir_save_file(target_date) + name_save_file(@band.bn_url, @div_date)  #def name_save_file locate down; def dir_save_file in application_controller.rb
+  unless File.exist?(name_file)
+		f = File.new(name_file, 'w')
+	  f << @div_article_header + "\n"
+	  f << @div_date + "\n"
+#debug
+#   article = div_all_page.css("div[class=ArticleBody_body_2ECha] p")
+    article = div_all_page.css("div[class=StandardArticleBody_body_1gnLA] p")
+
+    article.each do |elem|
+	    f << elem.text.gsub("\n", " ") + "\n"
+    end # article.each do |elem|
+	  # start save file
+		f.close
+
+	end # unless File.exist?(name_file)
+	  # end save file
+	#render layout: false
+  redirect_to bands_path	#bands#index
+	#redirect_back(fallback_location: root_path)
+  #render body: "raw"
   end	#def savefile	#“Save-file-txt”
 
   def double #удаление задвоенных статей - кнопка "Раздуплить"

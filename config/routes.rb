@@ -1,6 +1,10 @@
 Pisma::Application.routes.draw do
+  resources :bitcoins do
+    get 'double', on: :new
+    get 'savefile', on: :member
+    get 'corect', on: :member
+  end
   resources :reviews
-
 resources :bands do
   get 'double', on: :new
   get 'savefile', on: :member

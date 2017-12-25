@@ -1,0 +1,9 @@
+<h3><%= @div_article_header %></h3>
+<p><%= @div_date %></p>
+<% @mas_p.each do |elem| %>
+  <p><%= elem %></p>
+<% end %>
+<%#= link_to "Save-file-txt", savefile_band_path(band) %>
+<%= link_to "Save-file-txt", controller: "bitcoins", action: "savefile", id: @bitcoin %>
+<%= link_to "Обработать", controller: "bitcoins", action: "edit", id: @bitcoin %>
+

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171111152703) do
+ActiveRecord::Schema.define(version: 20171222143855) do
 
   create_table "bands", force: true do |t|
     t.string   "bn_head"
@@ -24,6 +24,15 @@ ActiveRecord::Schema.define(version: 20171111152703) do
 
   add_index "bands", ["bn_date"], name: "index_bands_on_bn_date"
   add_index "bands", ["created_at"], name: "index_bands_on_created_at"
+
+  create_table "bitcoins", force: true do |t|
+    t.datetime "btc_date"
+    t.string   "btc_head"
+    t.string   "btc_novelty"
+    t.string   "btc_url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "overlooks", force: true do |t|
     t.date     "lk_date"

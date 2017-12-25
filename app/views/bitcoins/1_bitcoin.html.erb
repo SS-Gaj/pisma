@@ -1,0 +1,16 @@
+<li>
+  <span class="content">
+	  <%= link_to bitcoin.btc_head, 'http://www.reuters.com' + bitcoin.btc_url %>   
+    <%= bitcoin.btc_novelty %>
+  </span>
+  <span class="timestamp">
+    <%= bitcoin.btc_date %> / 
+    <%= time_ago_in_words(bitcoin.btc_date) %> ago;
+	  <%= link_to "Удалить", bitcoin_path(bitcoin), method: :delete,
+                          data: {confirm: 'Вы уверены?'} %>
+	  <%= link_to "Прочитать", bitcoin_path(bitcoin) %>
+	  <%= link_to "Save-file-txt", savefile_bitcoin_path(bitcoin) %>
+	  <%= link_to "Обработать", edit_bitcoin_path(bitcoin) %>
+	  <%= link_to "Корр.время", corect_bitcoin_path(bitcoin) %>
+  </span>
+</li>

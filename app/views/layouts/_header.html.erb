@@ -6,13 +6,13 @@
         <li id="fat-menu" class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Новости<b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li><%= link_to "Показать ленту новостей", bands_path %></li>
-            <li><%= link_to "Обновить ленту новостей", new_band_path %></li>
+            <li><%= link_to "... фондового рынка", bands_path %></li>
+            <li><%= link_to "... про биткоин", bitcoins_path %></li>
             <li class="divider"></li>
+            <li><%= link_to "Обновить ленту новостей", new_band_path %></li>
             <li><%= link_to "Убрать дублирование", double_new_band_path %></li>
           </ul>
         </li>
-        <li><%#= link_to "Обновить ленту новостей", new_band_path, class: "dropdown-menu" %></li>
         <li><%= link_to "Обзор за...",  overlooks_path %></li>
         <li><%= link_to "Статьи",  reviews_path %></li>
       </ul>

@@ -122,6 +122,59 @@ class ApplicationController < ActionController::Base
     return name_file
   end #editor #"Обработать"
   
+  def editorbtc(url_article) #"Обработать биткоин"
+    target_date = DateTime.parse('2017-09-23T04:05:06+03:00')   #просто init
+	  # start scrabing
+    agent = Mechanize.new
+    page = agent.get("http://www.reuters.com"+url_article)
+    doc = Nokogiri::HTML(page.body)
+#    div_all_page = doc.css("div[class=inner-container]")
+    div_all_page = doc.css("div[class=renderable]")
+    @div_article_header = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y] h1").text
+    @div_date = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y]").css("div[class=ArticleHeader_date_V9eGk]").text
+    target_date = Date.new(DateTime.parse(@div_date).year, DateTime.parse(@div_date).mon, DateTime.parse(@div_date).day)
+    name_file = dir_save_file(target_date)
+    Dir.mkdir('bitcoin') unless File.directory?('bitcoin')
+	  Dir.chdir('bitcoin')
+    name_file = name_file + '/bitcoin'
+    if id_name = url_article =~ /id/
+      name_file = name_file + '/' + url_article[id_name, url_article.length-id_name]
+    else
+      name_file = name_file + '/id_no'    
+    end 
+    name_file = name_file + '.html'
+  #unless File.exist?(name_file)
+		f = File.new(name_file, 'w')
+    f << "<!DOCTYPE html>"
+    f << "<html>"
+    f << "<head>"
+    f << "<title>Reuters | Обработать</title>"
+    #f << '<%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>'
+    #f << '<%= javascript_include_tag "application", "data-turbolinks-track" => true %>'
+    #f << "<%= csrf_meta_tags %>"
+    f << "</head>"
+    f << "<body>"
+    f << "<h3>" + @div_article_header + "</h3>"
+    f << "<h3>" + @div_date + "</h3>"
+#   article = div_all_page.css("div[class=ArticleBody_body_2ECha] p")
+    article = div_all_page.css("div[class=StandardArticleBody_body_1gnLA] p")
+    article.each do |elem|
+      elem_text = elem.text.gsub("\n", " ")
+      mas = []
+      mas = elem_text.split('**')
+      mas.each do |para|
+	      f << "<p>" + para + "</p>"
+	    end #mas.each do |para|
+    end # article.each do |elem|
+    f << "</body>"
+    f << "</html>"
+	  # start save file
+		f.close
+    return name_file
+
+  end # def editorbtc(url_article) #"Обработатьбиткоин"
+  
+  
       def name_need_file (url, url_date) # used hier
       if url =~ /bitcoin/
         name_file = 'bitcoin-'

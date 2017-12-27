@@ -4,6 +4,13 @@ class BitcoinsController < ApplicationController
   end
 
   def edit	#"Обработать"
+	  @bitcoin = Bitcoin.find(params[:id])
+    #editor(@bitcoins.bn_url)     
+    #Obrab.new(name_file)
+    Obrabbtc.new(editorbtc(@bitcoin.btc_url))
+   #byebug
+    redirect_to btcnew_new_overlook_path	#overlooks#new
+   #redirect_to bands_path	#bands#index
   end	#def edit	#"Обработать"
   
   def show	#"Просмотреть"

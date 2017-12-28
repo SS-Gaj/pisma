@@ -14,6 +14,7 @@ end
 resources :overlooks do
   get 'btcnew', on: :new
   get 'btcedit', on: :member
+  get 'btcshow', on: :member
   get 'append', on: :member
 end
 #170814  match '/show',    to: 'bands#show',    via: 'get' 

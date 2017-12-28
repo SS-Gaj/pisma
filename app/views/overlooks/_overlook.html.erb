@@ -7,7 +7,11 @@
     <%#= overlook.lk_file %>
 	  <%#= link_to "Просмотреть", overlook_path(overlook) %>
 	  <%= link_to "Фондовый рынок", overlook_path(overlook) %>
-	  <%= link_to "Криптовалюты", "#" %>
+ 	  <% if overlook.lk_btcfile == nil %>
+  	  <%= link_to "Криптовалюты", "#" %>
+	  <% else %>
+  	  <%= link_to "Криптовалюты", btcshow_overlook_path(overlook) %>
+	  <% end %>
 	  <%#= link_to "Дополнить из ленты новостей", append_overlook_path(overlook) %>
   </span>
 </li>

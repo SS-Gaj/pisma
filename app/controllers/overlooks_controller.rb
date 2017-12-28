@@ -5,7 +5,7 @@ class OverlooksController < ApplicationController
     #@overlooks = Overlook.all
   end
 
-def new #переход из ленты новостей после нажатия "Обработать"
+def new #переход из ленты новостей (Биржи) после нажатия "Обработать"
 # создание нового файла "Обзор за ..." или вход в созданный ранее
 # + записывание заголовка "Обрабатываемой" статьи и времени публикации
   name_file = Obrab.file_obrab  # Obrab создано в bands_controller.rb
@@ -24,7 +24,12 @@ def new #переход из ленты новостей после нажати
   name_lk = dir_save_file(target_date) + name_save_file(target_date, '/lk-', '.xml')  #def dir_save_file и def name_save_file locate in 
 #byebug
 	unless File.exist?(name_lk)
-    overlook = Overlook.new(lk_date: target_date, lk_file: name_lk)
+	  unless Overlook.exists?(lk_date: target_date)
+      overlook = Overlook.new(lk_date: target_date, lk_file: name_lk)
+    else
+      overlook = Overlook.find_by lk_date: target_date
+      overlook.lk_file  = name_lk
+    end #unless Overlook.exists?(lk_date: target_date)
     overlook.save
 		f = File.new(name_lk, 'w')
 		@doc_f = Nokogiri::HTML::Document.parse <<-EOHTML
@@ -112,6 +117,16 @@ end #edit
     end # if File.exist?(name_lk)
   end
 
+  def btcshow  #кнопка "Просмотреть" из страницы "Обзор за..."
+    @overlook = Overlook.find(params[:id])
+    name_lk = @overlook.lk_btcfile
+    if File.exist?(name_lk)
+      @doc_f = File.open(name_lk) { |f| Nokogiri::XML(f) }
+      @article_mas = @doc_f.css "article"
+    end # if File.exist?(name_lk)
+    render "show"
+  end
+
 def btcnew #переход из ленты новостей после нажатия "Обработать"
 # создание нового файла "Обзор за ..." или вход в созданный ранее
 # + записывание заголовка "Обрабатываемой" статьи и времени публикации
@@ -131,7 +146,12 @@ def btcnew #переход из ленты новостей после нажа�
   name_lk = dir_save_file(target_date) + name_save_file(target_date, '/lk_btc-', '.xml')  #def dir_save_file и def name_save_file locate in 
 #byebug
 	unless File.exist?(name_lk)
-    overlook = Overlook.new(lk_date: target_date, lk_btcfile: name_lk)
+		  unless Overlook.exists?(lk_date: target_date)
+      overlook = Overlook.new(lk_date: target_date, lk_btcfile: name_lk)
+    else
+      overlook = Overlook.find_by lk_date: target_date
+      overlook.lk_btcfile  = name_lk
+    end #unless Overlook.exists?(lk_date: target_date)
     overlook.save
 		f = File.new(name_lk, 'w')
 		@doc_f = Nokogiri::HTML::Document.parse <<-EOHTML

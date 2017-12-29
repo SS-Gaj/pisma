@@ -13,6 +13,7 @@ resources :bands do
 end
 resources :overlooks do
   get 'btcnew', on: :new
+  get 'editall', on: :new
   get 'btcedit', on: :member
   get 'btcshow', on: :member
   get 'append', on: :member

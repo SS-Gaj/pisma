@@ -101,12 +101,39 @@ def edit	# при нажатии "Copy"
 		f.close
 	end # if File.exist?(name_lk)
 #byebug
-#byebug
 	render "new"
-	# redirect_to overlook_path(overlook)
-	# redirect_back(fallback_location: root_path)
-	# redirect_back
 end #edit
+
+def editall	# при нажатии "Copy all"
+# "Обработываемый" файл открываеся по-новой и считывается в Nokogiri
+# копируются все <p>
+  name_file = Obrab.file_obrab  # Obrab создано в bands_controller.rb
+  doc_obrab = File.open(name_file) { |f| Nokogiri::XML(f) }
+  div_all_page = doc_obrab.css("html")
+  article = div_all_page.css("h3")
+  @div_article_header = article.first.text
+  @div_date = article.last.text
+  article = div_all_page.css("p")  
+  #target_date = Date.today
+  target_date = Date.new(DateTime.parse(@div_date).year, DateTime.parse(@div_date).mon, DateTime.parse(@div_date).day)
+  name_lk = dir_save_file(target_date) + name_save_file(target_date, '/lk-', '.xml')  #def dir_save_file и def name_save_file locate in 
+	if File.exist?(name_lk)
+   @doc_f = File.open(name_lk) { |f| Nokogiri::XML(f) }
+   f = File.new(name_lk, 'w')
+    article.each do |elem|
+      nodes = @doc_f.css "ahead, atime, p"
+      p = Nokogiri::XML::Node.new "p", @doc_f
+      p.content = elem.text.gsub("\n", " ")
+      nodes.last.add_next_sibling(p)    
+    end  #article.each do |elem|
+    f << @doc_f   
+#debug
+		f.close
+	end # if File.exist?(name_lk)
+#byebg
+  redirect_to bands_path	#bands#index
+end #editall
+
 
   def show  #кнопка "Просмотреть" из страницы "Обзор за..."
     @overlook = Overlook.find(params[:id])

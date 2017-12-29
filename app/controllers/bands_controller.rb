@@ -18,61 +18,18 @@ class BandsController < ApplicationController
 ]
     rtrs_url.each do |my_url|
       #1 обрабатываем 1-ю страницу
-      #pastday = Date.today
-pastday = DateTime.parse('2017-08-18T04:05:06+03:00')   #просто init
+      pastday = DateTime.parse('2017-08-18T04:05:06+03:00')   #просто init
       agent = Mechanize.new
-      #page = agent.get("http://www.reuters.com/news/archive/marketsNews")
       page = agent.get(my_url)
-      doc = Nokogiri::HTML(page.body)
-      div_block_article = doc.css("div[class=story-content]")
-      div_block_article.each do |link|
-        href_view = link.css("a").first['href']
-        name_view = link.css("h3").first.text.strip
-        time_view = link.css("time[class=article-time]").css("span[class=timestamp]").first.text
-        content_view = link.css("p").first.text.strip
-        if my_file(href_view)
-          if @btc_file == true
-            bitcoin = Bitcoin.new(btc_head: name_view, btc_novelty: content_view, 
-            btc_date: time_view, btc_url: href_view)
-            bitcoin.save
-          else
-            band = Band.new(bn_head: name_view, novelty: content_view, 
-            bn_date: time_view, bn_url: href_view)
-            band.save
-          end
-        end #if my_file(href_view)
-      pastday = DateTime.parse(time_view)
-      end #div_block_article.each do |link|
+      pastday = rss_new(page)
       ##1
 
       #2 цикл для обработки последующих страниц
       target_date = DateTime.now - 1  # сутки назад
-
-#target_date = DateTime.parse('2017-01-01T00:00:00+03:00')   #просто init
-      #target_date = @bands_last.bn_date
       link_next = page.links.find { |l| l.text =~ /Earlier/ }
       until pastday < target_date # если неправда, что время статьи меньше заданного (т.е.если неправда, что статья напечатана раньше, чем заданное время)
         page = link_next.click
-        doc = Nokogiri::HTML(page.body)
-        div_block_article = doc.css("div[class=story-content]")
-        div_block_article.each do |link|
-          href_view = link.css("a").first['href']
-          name_view = link.css("h3").first.text.strip
-          time_view = link.css("time[class=article-time]").css("span[class=timestamp]").first.text
-          content_view = link.css("p").first.text.strip
-        if my_file(href_view)
-          if @btc_file == true
-            bitcoin = Bitcoin.new(btc_head: name_view, btc_novelty: content_view, 
-            btc_date: time_view, btc_url: href_view)
-            bitcoin.save
-          else
-            band = Band.new(bn_head: name_view, novelty: content_view, 
-            bn_date: time_view, bn_url: href_view)
-            band.save
-          end
-        end #if my_file(href_view)
-      pastday = DateTime.parse(time_view)
-      end #div_block_article.each do |link|
+        pastday = rss_new(page)
         link_next = page.links.find { |l| l.text =~ /Earlier/ }
         break if link_next == nil
       end # until pastday < target_date
@@ -83,12 +40,9 @@ pastday = DateTime.parse('2017-08-18T04:05:06+03:00')   #просто init
 
   def edit	#"Обработать"
 	  @band = Band.find(params[:id])
-    #editor(@band.bn_url)     
-    #Obrab.new(name_file)
     Obrab.new(editor(@band.bn_url))
    #byebug
     redirect_to new_overlook_path	#overlooks#new
-   #redirect_to bands_path	#bands#index
   end	#def edit	#"Обработать"
 
   def show	#"Просмотреть"
@@ -112,55 +66,13 @@ pastday = DateTime.parse('2017-08-18T04:05:06+03:00')   #просто init
   def savefile	#“Save-file-txt”
  	  @band = Band.find(params[:id])
     wrieter(@band.bn_url)      
-	  #render layout: false
     redirect_to bands_path	#bands#index
-	  #redirect_back(fallback_location: root_path)
-    #render body: "raw"
   end	#def savefile	#“Save-file-txt”
 
   def double #удаление задвоенных статей - кнопка "Раздуплить"
-    #col_old = 1948
-    #col_new = 1980
-    #col_new = Band.count
-    col_new = Band.first.id
-    col_old = col_new - 50
-    #col_old = 1
-    while col_new > col_old - 1
-  #byebug
-      record_id = col_new
-      if Band.exists?(record_id)
-        isx_record = Band.find(record_id)
-        isx_head = isx_record.bn_head
-        isx_date = isx_record.bn_date
-        while record_id > col_old - 1 do
-          yes_no = false
-          record_id -= 1
-          if Band.exists?(record_id)
-            tek_record = Band.find(record_id)
-            tek_head = tek_record.bn_head
-            tek_date = tek_record.bn_date
-            if tek_head.include? isx_head
-              yes_no = true
-            elsif isx_head.include? tek_head
-              yes_no = true
-            end #if tek_head.include? isx_head
-            if yes_no == true
-              if isx_date > tek_date
-                tek_record.destroy
-              else
-                new_isx_record = tek_record
-                isx_record.destroy
-                isx_record = new_isx_record
-                isx_head = new_isx_record.bn_head
-                isx_date = new_isx_record.bn_date
-              end #if isx_date < tek_date
-            end #if yes_no == true
-          end #if Band.exists?(record_id)
-        end #while record_id > col_old
-      end #if Band.exists?(record_id)
-      col_new -= 1
-    end #while col_new > col_old
-  ####
+    doubler(Band)
+    #doubler(Bitcoin, btc_head, btc_date)
+    #doubler(Band, bn_head, bn_date)
     redirect_to bands_path	#bands#index
   end #def double
 
@@ -193,36 +105,26 @@ pastday = DateTime.parse('2017-08-18T04:05:06+03:00')   #просто init
 	    return need_file
 	  end # def my_file (mas)
 
-    def name_save_file (url, url_date) # used hier
-      if url =~ /bitcoin/
-        name_file = 'bitcoin-'
-      elsif url =~ /usa-stocks/
-        name_file = 'usa-'
-      elsif url =~ /global-markets/
-        name_file = 'global-'
-      elsif url =~ /japan-stocks/
-        name_file = 'japan-'
-      elsif url =~ /hongkong/
-        name_file = 'hongkong-'
-      elsif url =~ /china/
-        name_file = 'china-'
-      elsif url =~ /europe-stocks/
-        name_file = 'europe-'
-      elsif url =~ /european-shares/
-        name_file = 'europe-'
-      elsif url =~ /oil-/
-        name_file = 'oil-'
-      else
-        name_file = 'othe-'
-      end
-      if url =~ /midday/
-        name_file = name_file + 'midday-'
-      elsif url =~ /close/
-        name_file = name_file + 'close-'
-      else
-      end
-name_file = '/bn-' + name_file + DateTime.parse(url_date).strftime("%y%m%d") + '-' + DateTime.parse(url_date).strftime("%H%M") + '.txt'
-      return name_file
-    end	#name_save_file
-
+    def rss_new(page)
+      doc = Nokogiri::HTML(page.body)
+      div_block_article = doc.css("div[class=story-content]")
+      div_block_article.each do |link|
+        href_view = link.css("a").first['href']
+        name_view = link.css("h3").first.text.strip
+        @time_view = link.css("time[class=article-time]").css("span[class=timestamp]").first.text
+        content_view = link.css("p").first.text.strip
+        if my_file(href_view)
+          if @btc_file == true
+            bitcoin = Bitcoin.new(btc_head: name_view, btc_novelty: content_view, 
+            btc_date: @time_view, btc_url: href_view)
+            bitcoin.save
+          else
+            band = Band.new(bn_head: name_view, novelty: content_view, 
+            bn_date: @time_view, bn_url: href_view)
+            band.save
+          end
+        end #if my_file(href_view)
+      end #div_block_article.each do |link|
+      return DateTime.parse(@time_view)   
+    end #rss_new
 end

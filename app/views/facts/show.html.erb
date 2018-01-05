@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Fc range:</strong>
+  <%= @fact.fc_range %>
+</p>
+
+<p>
+  <strong>Fc fact:</strong>
+  <%= @fact.fc_fact %>
+</p>
+
+<p>
+  <strong>Fc myurl:</strong>
+  <%= @fact.fc_myurl %>
+</p>
+
+<p>
+  <strong>Fc idurl:</strong>
+  <%= @fact.fc_idurl %>
+</p>
+
+<%= link_to 'Edit', edit_fact_path(@fact) %> |
+<%= link_to 'Back', facts_path %>

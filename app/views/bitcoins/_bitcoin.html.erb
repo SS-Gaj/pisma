@@ -6,7 +6,7 @@
   <span class="timestamp">
     <%= bitcoin.btc_date %> / 
     <%= time_ago_in_words(bitcoin.btc_date) %> ago;
-	  <%#= link_to "Удалить", bitcoin_path(bitcoin), method: :delete,
+	  <%= link_to "Удалить", bitcoin_path(bitcoin), method: :delete,
                           data: {confirm: 'Вы уверены?'} %>
 	  <%= link_to "Прочитать", bitcoin_path(bitcoin) %>
 	  <%= link_to "Save-file-txt", savefile_bitcoin_path(bitcoin) %>

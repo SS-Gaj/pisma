@@ -2,23 +2,12 @@ class OverlooksController < ApplicationController
 
   def index
     @overlooks = Overlook.paginate(page: params[:page])
-    #@overlooks = Overlook.all
   end
 
 def new #переход из ленты новостей (Биржи) после нажатия "Обработать"
 # создание нового файла "Обзор за ..." или вход в созданный ранее
 # + записывание заголовка "Обрабатываемой" статьи и времени публикации
-  name_file = Obrab.file_obrab  # Obrab создано в bands_controller.rb
-  doc_obrab = File.open(name_file) { |f| Nokogiri::XML(f) }
-  div_all_page = doc_obrab.css("html")
-  article = div_all_page.css("h3")
-  @div_article_header = article.first.text
-  @div_date = article.last.text
-  article = div_all_page.css("p")
-  @mas_p = []
-  article.each do |elem|
-    @mas_p.push(elem.text.gsub("\n", " "))
-  end
+    texttocopy  #/app/controllers/application_controller.rb
   #формирование имени файла "Обзор за ..."
   target_date = Date.new(DateTime.parse(@div_date).year, DateTime.parse(@div_date).mon, DateTime.parse(@div_date).day)
   name_lk = dir_save_file(target_date) + name_save_file(target_date, '/lk-', '.xml')  #def dir_save_file и def name_save_file locate in 
@@ -75,40 +64,16 @@ end #def new #переход из ленты новостей после наж�
 def edit	# при нажатии "Copy"
 # "Обработываемый" файл открываеся по-новой и считывается в Nokogiri
 #номер нужного абзаца выбирается как :id из полученного запроса	
-  name_file = Obrab.file_obrab  # Obrab создано в bands_controller.rb
-  doc_obrab = File.open(name_file) { |f| Nokogiri::XML(f) }
-  div_all_page = doc_obrab.css("html")
-  article = div_all_page.css("h3")
-  @div_article_header = article.first.text
-  @div_date = article.last.text
-  article = div_all_page.css("p")
-  @mas_p = []
-  article.each do |elem|
-      @mas_p.push(elem.text.gsub("\n", " "))
-  end
-  #target_date = Date.today
-  target_date = Date.new(DateTime.parse(@div_date).year, DateTime.parse(@div_date).mon, DateTime.parse(@div_date).day)
-  name_lk = dir_save_file(target_date) + name_save_file(target_date, '/lk-', '.xml')  #def dir_save_file и def name_save_file locate in 
-	if File.exist?(name_lk)
-   @doc_f = File.open(name_lk) { |f| Nokogiri::XML(f) }
-   nodes = @doc_f.css "ahead, atime, p"
-   f = File.new(name_lk, 'w')
-    p = Nokogiri::XML::Node.new "p", @doc_f
-    p.content = @mas_p[params[:id].to_i]
-    nodes.last.add_next_sibling(p)
-    f << @doc_f   
-#debug
-		f.close
-	end # if File.exist?(name_lk)
-#byebug
+  texttocopy  #  /app/helpers/overlooks_helper.rb
+  add_p('/lk-')
 	render "new"
 end #edit
 
 def editall	# при нажатии "Copy all"
 # "Обработываемый" файл открываеся по-новой и считывается в Nokogiri
 # копируются все <p>
-  name_file = Obrab.file_obrab  # Obrab создано в bands_controller.rb
-  doc_obrab = File.open(name_file) { |f| Nokogiri::XML(f) }
+  @file_obrab = Obrab.file_obrab  # Obrab создано в bands_controller.rb
+  doc_obrab = File.open(@file_obrab) { |f| Nokogiri::XML(f) }
   div_all_page = doc_obrab.css("html")
   article = div_all_page.css("h3")
   @div_article_header = article.first.text
@@ -157,17 +122,10 @@ end #editall
 def btcnew #переход из ленты новостей после нажатия "Обработать"
 # создание нового файла "Обзор за ..." или вход в созданный ранее
 # + записывание заголовка "Обрабатываемой" статьи и времени публикации
-  name_file = Obrabbtc.file_obrabbtc  # Obrab создано в bands_controller.rb
-  doc_obrab = File.open(name_file) { |f| Nokogiri::XML(f) }
-  div_all_page = doc_obrab.css("html")
-  article = div_all_page.css("h3")
-  @div_article_header = article.first.text
-  @div_date = article.last.text
-  article = div_all_page.css("p")
-  @mas_p = []
-  article.each do |elem|
-    @mas_p.push(elem.text.gsub("\n", " "))
-  end
+
+    texttocopy  #/app/controllers/application_controller.rb
+
+
   #формирование имени файла "Обзор за ..."
   target_date = Date.new(DateTime.parse(@div_date).year, DateTime.parse(@div_date).mon, DateTime.parse(@div_date).day)
   name_lk = dir_save_file(target_date) + name_save_file(target_date, '/lk_btc-', '.xml')  #def dir_save_file и def name_save_file locate in 
@@ -231,42 +189,43 @@ end #def btcnew #переход из ленты новостей после на
     #render "band/index"
     redirect_to bands_path	#bands#index
   end
-############################
-def btcedit	# при нажатии "Copy"
-# "Обработываемый" файл открываеся по-новой и считывается в Nokogiri
-#номер нужного абзаца выбирается как :id из полученного запроса	
-  name_file = Obrabbtc.file_obrabbtc  # Obrab создано в bands_controller.rb
-  doc_obrab = File.open(name_file) { |f| Nokogiri::XML(f) }
-  div_all_page = doc_obrab.css("html")
-  article = div_all_page.css("h3")
-  @div_article_header = article.first.text
-  @div_date = article.last.text
-  article = div_all_page.css("p")
-  @mas_p = []
-  article.each do |elem|
-      @mas_p.push(elem.text.gsub("\n", " "))
-  end
-  #target_date = Date.today
-  target_date = Date.new(DateTime.parse(@div_date).year, DateTime.parse(@div_date).mon, DateTime.parse(@div_date).day)
-  name_lk = dir_save_file(target_date) + name_save_file(target_date, '/lk_btc-', '.xml')  #def dir_save_file и def name_save_file locate in 
-	if File.exist?(name_lk)
-   @doc_f = File.open(name_lk) { |f| Nokogiri::XML(f) }
-   nodes = @doc_f.css "ahead, atime, p"
-   f = File.new(name_lk, 'w')
-    p = Nokogiri::XML::Node.new "p", @doc_f
-    p.content = @mas_p[params[:id].to_i]
-    nodes.last.add_next_sibling(p)
-    f << @doc_f   
-#debug
-		f.close
-	end # if File.exist?(name_lk)
-#byebug
-#byebug
-	render "btcnew"
-	# redirect_to overlook_path(overlook)
-	# redirect_back(fallback_location: root_path)
-	# redirect_back
-end #btcedit
 
+  def btcedit	# при нажатии "Copy" 'Bitcoin'    
+    texttocopy  #/app/controllers/application_controller.rb
+    add_p('/lk_btc-')
+	  render "btcnew"
+  end #def btcedit	# при нажатии "Copy"
+
+  def fact #копирование фактов из ленты новостей в БД 'Fact'
+  #вызывается при нажатии "Цифры_и_факты" в /app/views/overlooks/new.html.erb
+    texttocopy  #/app/controllers/application_controller.rb
+    factsave    #сохранение абзаца в БД 'Fact'
+  	render "new"
+  end #def fact #копирование фактов из ленты новостей в БД 'Fact'
+
+  def btcfact #копирование фактов из ленты новостей 'Bitcoin' в БД 'Fact'
+  #вызывается при нажатии "Цифры_и_факты" в /app/views/overlooks/btcnew.html.erb
+    texttocopy  #/app/controllers/application_controller.rb
+    factsave    #сохранение абзаца в БД 'Fact'
+  	render "btcnew"
+  end #def fact #копирование фактов из ленты новостей в БД 'Fact'
+
+  def add_p(dir_lk) #добавить вбзац
+  #номер нужного абзаца выбирается как :id из полученного запроса	
+    target_date = Date.new(DateTime.parse(@div_date).year, DateTime.parse(@div_date).mon, DateTime.parse(@div_date).day)
+    name_lk = dir_save_file(target_date) + name_save_file(target_date, dir_lk, '.xml')  #def dir_save_file и def name_save_file locate in 
+	  if File.exist?(name_lk)
+     @doc_f = File.open(name_lk) { |f| Nokogiri::XML(f) }
+     nodes = @doc_f.css "ahead, atime, p"
+     f = File.new(name_lk, 'w')
+      p = Nokogiri::XML::Node.new "p", @doc_f
+      p.content = @mas_p[params[:id].to_i]
+      nodes.last.add_next_sibling(p)
+      f << @doc_f   
+		  f.close
+	  end # if File.exist?(name_lk)
+  end #add_p
+#X
+#X
 ############################
 end	#class

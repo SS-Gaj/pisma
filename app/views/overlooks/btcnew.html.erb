@@ -3,4 +3,5 @@
 <% @mas_p.each.with_index do |elem, i| %>
   <p><%= elem %></p>
   <%= link_to "Copy", controller: "overlooks", action: "btcedit", id: i %>
+  <%= link_to "Цифры_и_факты", controller: "overlooks", action: "btcfact", id: i %>
 <% end %>

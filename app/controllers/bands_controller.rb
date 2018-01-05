@@ -45,6 +45,14 @@ class BandsController < ApplicationController
     redirect_to new_overlook_path	#overlooks#new
   end	#def edit	#"Обработать"
 
+  def editfact	#"Цифры_и_факты" из "Просмотреть" 
+	  @band = Band.find(params[:id])
+    # Obrab.new(toobrab(@band.bn_url, 'fact', @mas_p))
+    Obrab.new(editor(@band.bn_url))
+   #byebug
+    redirect_to newband_new_fact_path	#facts#newband 
+  end	#def edit	#"Обработать"
+
   def show	#"Просмотреть"
 	  @band = Band.find(params[:id])
 	  @mas_p = reader(@band.bn_url)

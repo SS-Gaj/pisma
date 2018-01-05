@@ -1,0 +1,33 @@
+<%= form_for(@fact) do |f| %>
+  <% if @fact.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@fact.errors.count, "error") %> prohibited this fact from being saved:</h2>
+
+      <ul>
+      <% @fact.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :fc_range %><br>
+    <%= f.text_field :fc_range %>
+  </div>
+  <div class="field">
+    <%= f.label :fc_fact %><br>
+    <%= f.text_field :fc_fact %>
+  </div>
+  <div class="field">
+    <%= f.label :fc_myurl %><br>
+    <%= f.text_field :fc_myurl %>
+  </div>
+  <div class="field">
+    <%= f.label :fc_idurl %><br>
+    <%= f.number_field :fc_idurl %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

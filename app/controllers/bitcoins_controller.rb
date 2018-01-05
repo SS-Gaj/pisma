@@ -18,6 +18,13 @@ class BitcoinsController < ApplicationController
 	  @mas_p = reader(@bitcoin.btc_url)
   end
 
+  def destroy #"Удалить" 
+  	  @bitcoin = Bitcoin.find(params[:id])
+  	  @bitcoin.destroy
+  	  redirect_to bitcoins_path	#bitcoins#index
+  end # def destroy
+
+
   def savefile	#“Save-file-txt”
  	  @bitcoin = Bitcoin.find(params[:id])
     wrieter(@bitcoin.btc_url)      

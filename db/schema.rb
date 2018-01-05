@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171225114855) do
+ActiveRecord::Schema.define(version: 20180102134359) do
 
   create_table "bands", force: true do |t|
     t.string   "bn_head"
@@ -32,6 +32,16 @@ ActiveRecord::Schema.define(version: 20171225114855) do
     t.string   "btc_url"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "facts", force: true do |t|
+    t.string   "fc_range"
+    t.string   "fc_fact"
+    t.string   "fc_myurl"
+    t.integer  "fc_idurl"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "fc_date"
   end
 
   create_table "overlooks", force: true do |t|

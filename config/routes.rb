@@ -1,23 +1,33 @@
 Pisma::Application.routes.draw do
+  resources :facts do
+    get 'newband', on: :new
+    get 'copyband', on: :member
+  end
+  
   resources :bitcoins do
     get 'double', on: :new
     get 'savefile', on: :member
     get 'corect', on: :member
   end
+  
   resources :reviews
-resources :bands do
-  get 'double', on: :new
-  get 'savefile', on: :member
-#  get 'china', on: :member
-  get 'corect', on: :member
-end
-resources :overlooks do
-  get 'btcnew', on: :new
-  get 'editall', on: :new
-  get 'btcedit', on: :member
-  get 'btcshow', on: :member
-  get 'append', on: :member
-end
+  
+  resources :bands do
+    get 'double', on: :new
+    get 'savefile', on: :member
+    get 'editfact', on: :member
+    get 'corect', on: :member
+  end
+  
+  resources :overlooks do
+    get 'btcnew', on: :new
+    get 'editall', on: :new
+    get 'btcedit', on: :member
+    get 'btcshow', on: :member
+    get 'append', on: :member
+    get 'fact', on: :member
+    get 'btcfact', on: :member
+  end
 #170814  match '/show',    to: 'bands#show',    via: 'get' 
   # get "bands/index"
 #170814	match '/bands',    to: 'bands#index',    via: 'get'

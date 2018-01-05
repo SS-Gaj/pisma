@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   include OverlooksHelper
   @reuters_dir = '/home/ss/reuters'
+  
   def dir_save_file (date_prezent)  # used in overlooks_controller.rb
   # puts "REUTERS_DIR = #{REUTERS_DIR}"
 	  dir_year = date_prezent.year.to_s
@@ -197,4 +198,48 @@ byebug
     return name_file
   end #def toobrab (url_article, sfera, article)
   
+  def texttocopy()
+  # "Обработываемый" файл открываеся по-новой и считывается в Nokogiri
+  #byebug
+    if @_action_name =~ /btc/
+      @file_obrab = Obrabbtc.file_obrabbtc  # Obrab создано в bands_controller.rb
+    else
+      @file_obrab = Obrab.file_obrab  # Obrab создано в bands_controller.rb
+    end
+    doc_obrab = File.open(@file_obrab) { |f| Nokogiri::XML(f) }
+    div_all_page = doc_obrab.css("html")
+    article = div_all_page.css("h3")
+    @div_article_header = article.first.text
+    @div_date = article.last.text
+    article = div_all_page.css("p")
+    @mas_p = []
+    article.each do |elem|
+      @mas_p.push(elem.text.gsub("\n", " "))
+    end
+  end # def texttocopy()
+  
+  def factsave()
+    target_date = Date.new(DateTime.parse(@div_date).year, DateTime.parse(@div_date).mon, DateTime.parse(@div_date).day)
+    my_fact = @mas_p[params[:id].to_i].to_s
+    if @file_obrab =~ /bitcoin/
+      my_range = "bitcoin"
+    elsif @file_obrab =~ /oil/
+      my_range = "oil"
+    else
+      if my_fact =~ /B|bitcoin/
+        my_range = "bitcoin"
+      elsif my_fact =~ /O|oil/
+        my_range = "oil"
+      end
+      my_range = "burse"
+    end
+    fact = Fact.new(fc_date: target_date, 
+                    fc_range: my_range, 
+                    fc_fact: @mas_p[params[:id].to_i], 
+                    fc_myurl: @file_obrab             
+                    )
+            #fc_idurl: @band.id   
+    fact.save
+  end #def factsave
+
 end

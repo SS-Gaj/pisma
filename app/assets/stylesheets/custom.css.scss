@@ -126,7 +126,7 @@ footer {
     padding: 10px 0;
     border-top: 1px solid #e8e8e8;
   }
-  td {
+  tr {
     padding: 10px 5px;
     border-top: 1px solid #e8e8e8;
   }
@@ -168,3 +168,11 @@ div {
   }
 }
 
+/*fact
+table {
+    display: table;
+    border-collapse: separate;
+    border-spacing: 2px;
+    border-color: gray;
+}
+*/

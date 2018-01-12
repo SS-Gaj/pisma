@@ -99,6 +99,37 @@ def editall	# при нажатии "Copy all"
   redirect_to bands_path	#bands#index
 end #editall
 
+def editallbtc	# при нажатии "Copy all"
+# "Обработываемый" файл открываеся по-новой и считывается в Nokogiri
+# копируются все <p>
+  @file_obrab = Obrabbtc.file_obrabbtc  # Obrabbtc создано в bands_controller.rb
+  doc_obrab = File.open(@file_obrab) { |f| Nokogiri::XML(f) }
+  div_all_page = doc_obrab.css("html")
+  article = div_all_page.css("h3")
+  @div_article_header = article.first.text
+  @div_date = article.last.text
+  article = div_all_page.css("p")  
+  #target_date = Date.today
+  target_date = Date.new(DateTime.parse(@div_date).year, DateTime.parse(@div_date).mon, DateTime.parse(@div_date).day)
+  name_lk = dir_save_file(target_date) + name_save_file(target_date, '/lk_btc-', '.xml')  #def dir_save_file и def name_save_file locate in 
+	if File.exist?(name_lk)
+   @doc_f = File.open(name_lk) { |f| Nokogiri::XML(f) }
+   f = File.new(name_lk, 'w')
+    article.each do |elem|
+      nodes = @doc_f.css "ahead, atime, p"
+      p = Nokogiri::XML::Node.new "p", @doc_f
+      p.content = elem.text.gsub("\n", " ")
+      nodes.last.add_next_sibling(p)    
+    end  #article.each do |elem|
+    f << @doc_f   
+#debug
+		f.close
+	end # if File.exist?(name_lk)
+#byebg
+  redirect_to overlooks_path	#overlook#index
+end #editallbtc
+
+
 
   def show  #кнопка "Просмотреть" из страницы "Обзор за..."
     @overlook = Overlook.find(params[:id])

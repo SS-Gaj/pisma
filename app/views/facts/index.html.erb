@@ -3,19 +3,15 @@
 <table>
   <tbody>
     <% @facts.each do |fact| %>
-      <tr>
-      <span class="microposts">
-        <td><%= fact.fc_date.strftime("%y-%m-%d") %></td>
-        <td><%= fact.fc_range %></td>
-        <td><%= fact.fc_fact %></td>
-        <td><%#= fact.fc_myurl %></td>
-        <td><%#= fact.fc_idurl %></td>
-        <td><%= link_to 'Show', fact %></td>
-        <td><%= link_to 'Edit', edit_fact_path(fact) %></td>
-        <td><%= link_to 'Destroy', fact, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </span>
-      </tr>
-    <% end %>
+        <tr>
+          <td><%= fact.fc_date.strftime("%y-%m-%d") %></td>
+          <td><%= fact.fc_range %></td>
+          <td><%= fact.fc_fact %></td>
+          <td><%= link_to 'Show', fact %></td>
+          <td><%= link_to 'Edit', edit_fact_path(fact) %></td>
+          <td><%= link_to 'Destroy', fact, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+   <% end %>
   </tbody>
 </table>
 

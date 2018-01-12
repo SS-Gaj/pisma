@@ -1,0 +1,6 @@
+<h3><%= @div_article_header %></h3>
+<p><%= @div_date %></p>
+<% @mas_p.each.with_index do |elem, i| %>
+  <p><%= elem %></p>
+  <%= link_to "Цифры_и_факты", controller: "facts", action: "copybtc", id: i %>
+<% end %>

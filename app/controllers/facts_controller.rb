@@ -64,12 +64,24 @@ class FactsController < ApplicationController
   def newband #"Цифры_и_факты" из "Просмотреть". Сюда попадаем из def editfact bands_controller
     texttocopy  #/app/controllers/application_controller.rb
   end
+
+  def newbtc #"Цифры_и_факты" из "Просмотреть". Сюда попадаем из def editfact bitcoins_controller
+    texttocopy  #/app/controllers/application_controller.rb
+#  	render "newband"
+  end
   
   def copyband #копирование фактов из ленты новостей в БД 'Band'
   #вызывается в цепочке нажатия "Цифры_и_факты" в "Просмотреть"
     texttocopy  #/app/controllers/application_controller.rb
     factsave    #сохранение абзаца в БД 'Fact'
   	render "newband"
+  end #def fact #копирование фактов из ленты новостей в БД 'Fact'
+
+  def copybtc #копирование фактов из ленты новостей в БД 'Bitcoin'
+  #вызывается в цепочке нажатия "Цифры_и_факты" в "Просмотреть"
+    texttocopy  #/app/controllers/application_controller.rb
+    factsave    #сохранение абзаца в БД 'Fact'
+  	render "newbtc"
   end #def fact #копирование фактов из ленты новостей в БД 'Fact'
 
   private

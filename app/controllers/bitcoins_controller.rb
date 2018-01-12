@@ -13,6 +13,13 @@ class BitcoinsController < ApplicationController
    #redirect_to bands_path	#bands#index
   end	#def edit	#"Обработать"
   
+  def editfact	#"Цифры_и_факты" из "Просмотреть биткоин" 
+	  @bitcoin = Bitcoin.find(params[:id])
+    Obrabbtc.new(editorbtc(@bitcoin.btc_url))
+   #byebug
+    redirect_to newbtc_new_fact_path	#facts#newband 
+  end	#def edit	#"Обработать"
+
   def show	#"Просмотреть"
 	  @bitcoin = Bitcoin.find(params[:id])
 	  @mas_p = reader(@bitcoin.btc_url)

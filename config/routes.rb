@@ -1,12 +1,15 @@
 Pisma::Application.routes.draw do
   resources :facts do
     get 'newband', on: :new
+    get 'newbtc', on: :new
     get 'copyband', on: :member
+    get 'copybtc', on: :member
   end
   
   resources :bitcoins do
     get 'double', on: :new
     get 'savefile', on: :member
+    get 'editfact', on: :member
     get 'corect', on: :member
   end
   
@@ -22,6 +25,7 @@ Pisma::Application.routes.draw do
   resources :overlooks do
     get 'btcnew', on: :new
     get 'editall', on: :new
+    get 'editallbtc', on: :new
     get 'btcedit', on: :member
     get 'btcshow', on: :member
     get 'append', on: :member

@@ -1,6 +1,11 @@
 <p id="notice"><%= notice %></p>
 
 <p>
+  <strong>Fc date:</strong>
+  <%= @fact.fc_date %>
+</p>
+
+<p>
   <strong>Fc range:</strong>
   <%= @fact.fc_range %>
 </p>
@@ -16,8 +21,13 @@
 </p>
 
 <p>
-  <strong>Fc idurl:</strong>
-  <%= @fact.fc_idurl %>
+  <strong>Fc isxurl:</strong>
+  <% if @fact.fc_isxurl =~ /http/ %>
+    <%= link_to @fact.fc_isxurl, @fact.fc_isxurl %>
+  <% else %>
+    <%= @fact.fc_isxurl %>
+  <% end %>
+  
 </p>
 
 <%= link_to 'Edit', edit_fact_path(@fact) %> |

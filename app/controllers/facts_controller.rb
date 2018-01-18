@@ -94,6 +94,6 @@ class FactsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def fact_params
-      params.require(:fact).permit(:fc_range, :fc_fact, :fc_myurl, :fc_idurl, :fc_date)
+      params.require(:fact).permit(:fc_range, :fc_fact, :fc_myurl, :fc_isxurl, :fc_date)
     end
 end

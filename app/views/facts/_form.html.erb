@@ -11,20 +11,35 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :fc_range %><br>
-    <%= f.text_field :fc_range %>
+  <div class="row">
+  	<div class="span4">
+      <div class="field">
+        <%#= f.label :fc_date %>
+        <p> Дата публикации:</p>
+        <%= f.text_field :fc_date %>
+      </div>
+    </div>
+    <div class="span8">
+      <div class="field">
+        <%#= f.label :fc_range %>
+        <p> Сфера:</p>
+        <%= f.text_field :fc_range %>
+      </div>
+   </div>
   </div>
   <div class="field">
-    <%= f.label :fc_fact %><br>
-    <%= f.text_field :fc_fact %>
+    <%#= f.label :fc_fact %>
+    <p> Текст:</p>
+    <%= f.text_area :fc_fact, class: 'box_article' %>
   </div>
   <div class="field">
-    <%= f.label :fc_myurl %><br>
+    <%#= f.label :fc_myurl %>
+    <p> Внутренний адрес:</p>
     <%= f.text_field :fc_myurl %>
   </div>
   <div class="field">
-    <%= f.label :fc_idurl %><br>
+    <%#= f.label :fc_idurl %>
+    <p> Внешний адрес:</p>
     <%= f.number_field :fc_idurl %>
   </div>
   <div class="actions">

@@ -151,14 +151,14 @@ aside {
 /* article */
 
 .box_article {
-    height: 100px;
-    width: 500px;
+    height: 150px;
+    width: 750px;
     border-style: dotted;
     overflow-y: scroll;
 }
 
 #title_article {
-    width: 500px;
+    width: 750px;
 }
 
 /*I moved it from scaffolds.css.scss*/
@@ -168,11 +168,17 @@ div {
   }
 }
 
-/*fact
-table {
+/* fact */
+/* table {
     display: table;
     border-collapse: separate;
     border-spacing: 2px;
     border-color: gray;
 }
 */
+
+.mylinetop {
+   margin-top: 10px;
+   margin-bottom: 10px;
+   border-top: 2px solid #e8e8e8;
+}

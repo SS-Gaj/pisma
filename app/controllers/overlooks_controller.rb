@@ -126,7 +126,7 @@ def editallbtc	# при нажатии "Copy all"
 		f.close
 	end # if File.exist?(name_lk)
 #byebg
-  redirect_to overlooks_path	#overlook#index
+  redirect_to bitcoins_path	#overlook#index
 end #editallbtc
 
 

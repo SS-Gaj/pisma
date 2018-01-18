@@ -168,7 +168,7 @@ byebug
     Dir.mkdir(sfera) unless File.directory?(sfera)
 	  Dir.chdir(sfera)
     name_file = name_file + '/' + sfera + '/' + name_need_file(url_article)
-    if id_name = url_article =~ /id/
+    if id_name = url_article =~ /id[A-Z\d]+\Z/ #/id/
       name_file = name_file + url_article[id_name, url_article.length-id_name]
     else
       name_file = name_file + 'id_no'    
@@ -219,6 +219,8 @@ byebug
   end # def texttocopy()
   
   def factsave()
+    my_date = DateTime.new
+    my_date = DateTime.parse(@div_date)
     target_date = Date.new(DateTime.parse(@div_date).year, DateTime.parse(@div_date).mon, DateTime.parse(@div_date).day)
     my_fact = @mas_p[params[:id].to_i].to_s
     if @file_obrab =~ /bitcoin/
@@ -233,7 +235,7 @@ byebug
       end
       my_range = "burse"
     end
-    fact = Fact.new(fc_date: target_date, 
+    fact = Fact.new(fc_date: my_date, 
                     fc_range: my_range, 
                     fc_fact: @mas_p[params[:id].to_i], 
                     fc_myurl: @file_obrab             

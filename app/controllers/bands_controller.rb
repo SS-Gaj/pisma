@@ -106,6 +106,12 @@ class BandsController < ApplicationController
 	    elsif mas =~ /bitcoin/
 	      need_file = true
 	      @btc_file = true
+	    elsif mas =~ /virtual-currenc/
+	      need_file = true
+	      @btc_file = true
+	    elsif mas =~ /blockchain/
+	      need_file = true
+	      @btc_file = true
 	    elsif mas =~ /opec|oil/
 	      need_file = true
 	    else

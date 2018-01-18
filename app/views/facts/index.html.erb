@@ -1,20 +1,28 @@
 <h1>Цифры и факты</h1>
-
-<table>
-  <tbody>
-    <% @facts.each do |fact| %>
-        <tr>
-          <td><%= fact.fc_date.strftime("%y-%m-%d") %></td>
-          <td><%= fact.fc_range %></td>
-          <td><%= fact.fc_fact %></td>
-          <td><%= link_to 'Show', fact %></td>
-          <td><%= link_to 'Edit', edit_fact_path(fact) %></td>
-          <td><%= link_to 'Destroy', fact, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        </tr>
-   <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Fact', new_fact_path %>
+<div class="row">
+  <div class="span10">
+    <%= will_paginate %>
+  </div>
+  <div class="span2">
+    <%= link_to 'New Fact', new_fact_path %>
+  </div>
+</div>
+<% @facts.each do |fact| %>
+  <div class="row mylinetop">
+    <div class="span1">
+      <%= fact.fc_date.strftime("%-d%b %Y") %>
+    </div>
+    <div class="span1">
+      <%= fact.fc_range %>
+    </div>
+    <div class="span8">
+      <%= fact.fc_fact %>
+    </div>
+    <div class="span2">
+      <%= link_to 'Show', fact %>
+      <%= link_to 'Edit', edit_fact_path(fact) %>
+      <%= link_to 'Destroy', fact, method: :delete, data: { confirm: 'Are you sure?' } %>
+    </div>
+  </div>
+<% end %>
+<%= will_paginate %>

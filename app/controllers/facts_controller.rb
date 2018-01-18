@@ -4,7 +4,9 @@ class FactsController < ApplicationController
   # GET /facts
   # GET /facts.json
   def index
-    @facts = Fact.all
+#    @facts = Fact.all
+		@facts = Fact.paginate(page: params[:page])
+
   end
 
   # GET /facts/1
@@ -92,6 +94,6 @@ class FactsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def fact_params
-      params.require(:fact).permit(:fc_range, :fc_fact, :fc_myurl, :fc_idurl)
+      params.require(:fact).permit(:fc_range, :fc_fact, :fc_myurl, :fc_idurl, :fc_date)
     end
 end

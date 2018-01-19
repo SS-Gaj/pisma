@@ -184,6 +184,7 @@ byebug
     f << "<body>"
     f << "<h3>" + @div_article_header + "</h3>"
     f << "<h3>" + @div_date + "</h3>"
+    f << "<h4>" + url_article + "</h4>"
     article.each do |elem|
       mas = []
       mas = elem.split('**')
@@ -211,6 +212,7 @@ byebug
     article = div_all_page.css("h3")
     @div_article_header = article.first.text
     @div_date = article.last.text
+    @div_isxurl = div_all_page.css("h4").text
     article = div_all_page.css("p")
     @mas_p = []
     article.each do |elem|
@@ -238,9 +240,9 @@ byebug
     fact = Fact.new(fc_date: my_date, 
                     fc_range: my_range, 
                     fc_fact: @mas_p[params[:id].to_i], 
-                    fc_myurl: @file_obrab             
+                    fc_myurl: @file_obrab, 
+                    fc_isxurl: "http://www.reuters.com" + @div_isxurl             
                     )
-            #fc_idurl: @band.id   
     fact.save
   end #def factsave
 

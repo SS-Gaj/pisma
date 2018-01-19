@@ -15,7 +15,9 @@ class BandsController < ApplicationController
 "http://www.reuters.com/news/archive/ousivMolt", 
 "http://www.reuters.com/news/archive/hongkongMktRpt", 
 "http://www.reuters.com/news/archive/londonMktRpt", 
+'https://www.reuters.com/news/archive/RCOMUS_Fintech'
 ]
+
     rtrs_url.each do |my_url|
       #1 обрабатываем 1-ю страницу
       pastday = DateTime.parse('2017-08-18T04:05:06+03:00')   #просто init

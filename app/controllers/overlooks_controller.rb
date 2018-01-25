@@ -67,6 +67,7 @@ def edit	# при нажатии "Copy"
   texttocopy  #  /app/helpers/overlooks_helper.rb
   add_p('/lk-')
 	render "new"
+  #redirect_to :back
 end #edit
 
 def editall	# при нажатии "Copy all"

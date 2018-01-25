@@ -31,17 +31,30 @@ class ApplicationController < ActionController::Base
     agent = Mechanize.new
     page = agent.get("http://www.reuters.com" + url_article)    #@band.bn_url
     doc = Nokogiri::HTML(page.body)
-#   div_all_page = doc.css("div[class=inner-container]")
-    div_all_page = doc.css("div[class=renderable]")
-    @div_article_header = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y] h1").text
-    @div_date = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y]").css("div[class=ArticleHeader_date_V9eGk]").text
-#   article = div_all_page.css("div[class=ArticleBody_body_2ECha] p")
-    article = div_all_page.css("div[class=StandardArticleBody_body_1gnLA] p")
-    mas_glob = []
-    article.each do |elem|
-      mas_glob.push(elem.text.gsub("\n", " "))
+    unless url_article =~ /live-markets/
+  #   div_all_page = doc.css("div[class=inner-container]")
+      div_all_page = doc.css("div[class=renderable]")
+      @div_article_header = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y] h1").text
+      @div_date = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y]").css("div[class=ArticleHeader_date_V9eGk]").text
+  #   article = div_all_page.css("div[class=ArticleBody_body_2ECha] p")
+      article = div_all_page.css("div[class=StandardArticleBody_body_1gnLA] p")
+      mas_glob = []
+      article.each do |elem|
+        mas_glob.push(elem.text.gsub("\n", " "))
+      end
+      return mas_glob
+    else
+      div_all_page = doc.css("div[class=renderable]")
+      @div_article_header = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y] h1").text
+      @div_date = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y]").css("div[class=ArticleHeader_date_V9eGk]").text
+  #   article = div_all_page.css("div[class=ArticleBody_body_2ECha] p")
+      article = div_all_page.css("div [class=StandardArticleBody_body_1gnLA] pre")
+      mas_glob = []
+      article.each do |elem|
+        mas_glob.push(elem.text.gsub("\n", " "))
+      end
+      return mas_glob
     end
-    return mas_glob
   end #def reader(url_article) #для "Прочитать"
   
   def wrieter(url_article)  #“Save-file-txt”
@@ -77,16 +90,15 @@ class ApplicationController < ActionController::Base
   end # def editorbtc(url_article) #"Обработатьбиткоин"
   
   def doubler(db)   #, db_head, db_date)
-      #col_old = 1948
-    #col_new = 1980
-    #col_new = Band.count
     col_new = db.first.id
-    while db.exists?(col_new)
-      col_new += 1
-    end
-    col_new = col_new - 1
+    day_today = db.first.bn_date
+    begin
+      col_new -= 1
+      while not db.exists?(col_new)
+        col_new -= 1
+      end    
+    end until db.find(col_new).bn_date < day_today - 2*86400
     col_old = col_new - 50
-    #col_old = 1
     while col_new > col_old - 1
       record_id = col_new
       if db.exists?(record_id)

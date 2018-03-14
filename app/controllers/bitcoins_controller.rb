@@ -31,6 +31,12 @@ class BitcoinsController < ApplicationController
   	  redirect_to bitcoins_path	#bitcoins#index
   end # def destroy
 
+  def corect #"Корр.время" 
+  	  @bitcoin = Bitcoin.find(params[:id])
+   	  @bitcoin.btc_date = @bitcoin.btc_date - 86400
+  	  @bitcoin.save
+  	  redirect_to bitcoins_path	#bitcoins#index
+  end # def destroy
 
   def savefile	#“Save-file-txt”
  	  @bitcoin = Bitcoin.find(params[:id])

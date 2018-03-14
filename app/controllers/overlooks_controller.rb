@@ -37,26 +37,25 @@ def new #переход из ленты новостей (Биржи) после
    @doc_f = File.open(name_lk) { |f| Nokogiri::XML(f) }
    #f = File.open(name_lk, 'a+')
    f = File.new(name_lk, 'w')
-    nodes = @doc_f.css "day, ahead, atime, p"
-    ahead = Nokogiri::XML::Node.new "ahead", @doc_f
+    nodes = @doc_f.css "day, ahead, atime, p"       # ЯтД, это я ищу 
+    ahead = Nokogiri::XML::Node.new "ahead", @doc_f # ЯтД, это я создаю
     ahead.content = @div_article_header
     nodes.last.add_next_sibling(ahead)
 
     nodes = @doc_f.css "day, ahead, atime, p"
-    atime = Nokogiri::XML::Node.new "atime", @doc_f
+    atime = Nokogiri::XML::Node.new "atime", @doc_f # ЯтД, это я создаю
     atime.content = @div_date
     nodes.last.add_next_sibling(atime)
 
     #nodes = @doc_f.css "day, ahead, atime, p"    
     nodes = @doc_f.css "day, article"
-    article = Nokogiri::XML::Node.new "article", @doc_f
+    article = Nokogiri::XML::Node.new "article", @doc_f   # ЯтД, это я создаю пустой узел для будущего содержания <p>
     article.content = ""
     nodes.last.add_next_sibling(article)
 # h1.parent = div  # div становится "родителем" h1
     ahead.parent = article
     atime.parent = article
-
-    f << @doc_f
+     f << @doc_f
 #debug
 		f.close
 end #def new #переход из ленты новостей после нажатия "Обработать"

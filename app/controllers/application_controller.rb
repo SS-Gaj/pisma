@@ -31,30 +31,26 @@ class ApplicationController < ActionController::Base
     agent = Mechanize.new
     page = agent.get("http://www.reuters.com" + url_article)    #@band.bn_url
     doc = Nokogiri::HTML(page.body)
+      
+    #div_all_page = doc.css("div[class=renderable]")
+    div_all_page = doc.css("div[class=inner-container_1LBl0]")    
+    #@div_article_header = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y] h1").text
+    @div_article_header = div_all_page.css("div[class=content-container_3Ma9y] h1").text
+    #@div_date = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y]").css("div[class=ArticleHeader_date_V9eGk]").text
+    @div_date = div_all_page.css("div[class=content-container_3Ma9y]").css("div[class=date_V9eGk]").text
     unless url_article =~ /live-markets/
-  #   div_all_page = doc.css("div[class=inner-container]")
-      div_all_page = doc.css("div[class=renderable]")
-      @div_article_header = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y] h1").text
-      @div_date = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y]").css("div[class=ArticleHeader_date_V9eGk]").text
-  #   article = div_all_page.css("div[class=ArticleBody_body_2ECha] p")
-      article = div_all_page.css("div[class=StandardArticleBody_body_1gnLA] p")
-      mas_glob = []
-      article.each do |elem|
-        mas_glob.push(elem.text.gsub("\n", " "))
-      end
-      return mas_glob
+      #article = div_all_page.css("div[class=StandardArticleBody_body_1gnLA] p")
+      article = div_all_page.css("div[class=body_1gnLA] p")
+      @div_first = div_all_page.css("div[class=body_1gnLA]").css("p[class=first-p_2htdt]").text
+    #byebug
     else
-      div_all_page = doc.css("div[class=renderable]")
-      @div_article_header = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y] h1").text
-      @div_date = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y]").css("div[class=ArticleHeader_date_V9eGk]").text
-  #   article = div_all_page.css("div[class=ArticleBody_body_2ECha] p")
       article = div_all_page.css("div [class=StandardArticleBody_body_1gnLA] pre")
-      mas_glob = []
-      article.each do |elem|
-        mas_glob.push(elem.text.gsub("\n", " "))
-      end
-      return mas_glob
+    end    
+    mas_glob = []
+    article.each do |elem|
+     mas_glob.push(elem.text.gsub("\n", " "))
     end
+    return mas_glob 
   end #def reader(url_article) #для "Прочитать"
   
   def wrieter(url_article)  #“Save-file-txt”

@@ -21,52 +21,43 @@ def new #переход из ленты новостей (Биржи) после
     end #unless Overlook.exists?(lk_date: target_date)
     overlook.save
 		f = File.new(name_lk, 'w')
-    @doc_f = Nokogiri::HTML::Document.parse <<-EOHTML
-      <root>
-        <day>Обзор за </day>
-        <newsday>
-        </newsday>
-        <fullcontent>
-        </fullcontent>
-      </root>
+		@doc_f = Nokogiri::HTML::Document.parse <<-EOHTML
+        <root>
+          <day>Обзор за </day>
+        </root>
     EOHTML
     day = @doc_f.at_css "day"
-    day.content = "Обзор за " + target_date.strftime("%Y-%m-%d")
-    content = @doc_f.at_css "fullcontent"
-    content.content = " "
-    news = @doc_f.at_css "newsday"
-    news.content = " "
+    day.content = "Обзор за " + target_date.strftime("%Y%m%d")
+    #nodes = @doc_f.css "h1"
+    #nodes.wrap("<div class='container'></div>")
     f << @doc_f
     f.close
 	end # unless File.exist?(name_lk)
-
-   @doc_f = File.open(name_lk) { |f| Nokogiri::XML(f) }
-   f = File.new(name_lk, 'w')
- 
-    nodes = @doc_f.css "fullcontent"       # нахожу блок 'content' - каждый день (т.е.в каждом файле) он единственный 
-
-# вставляю в "fullcontent" "рамки" для статьи:
-    article = Nokogiri::XML::Node.new "article", @doc_f
-    article.content = " "
 #byebug
-    nodes.last.add_next_sibling(article)  
-    article.parent = nodes.last
-
-    nodes = @doc_f.css "article"       # нахожу все "article"
-    ahead = Nokogiri::XML::Node.new "ahead", @doc_f #создаю узел для заголовка
+   @doc_f = File.open(name_lk) { |f| Nokogiri::XML(f) }
+   #f = File.open(name_lk, 'a+')
+   f = File.new(name_lk, 'w')
+    nodes = @doc_f.css "day, ahead, atime, p"       # ЯтД, это я ищу 
+    ahead = Nokogiri::XML::Node.new "ahead", @doc_f # ЯтД, это я создаю
     ahead.content = @div_article_header
     nodes.last.add_next_sibling(ahead)
-    ahead.parent = nodes.last #article
 
-    nodes = @doc_f.css "article"       # ЯтД, что узел поменялся, поэтому создаю его заново
-    atime = Nokogiri::XML::Node.new "atime", @doc_f
+    nodes = @doc_f.css "day, ahead, atime, p"
+    atime = Nokogiri::XML::Node.new "atime", @doc_f # ЯтД, это я создаю
     atime.content = @div_date
     nodes.last.add_next_sibling(atime)
-    atime.parent = nodes.last #article
 
-    f << @doc_f
+    #nodes = @doc_f.css "day, ahead, atime, p"    
+    nodes = @doc_f.css "day, article"
+    article = Nokogiri::XML::Node.new "article", @doc_f   # ЯтД, это я создаю пустой узел для будущего содержания <p>
+    article.content = ""
+    nodes.last.add_next_sibling(article)
+# h1.parent = div  # div становится "родителем" h1
+    ahead.parent = article
+    atime.parent = article
+     f << @doc_f
+#debug
 		f.close
-#byebug
 end #def new #переход из ленты новостей после нажатия "Обработать"
 
 def edit	# при нажатии "Copy"
@@ -208,7 +199,7 @@ def btcnew #переход из ленты новостей после нажа�
     #nodes = @doc_f.css "day, ahead, atime, p"    
     nodes = @doc_f.css "day, article"
     article = Nokogiri::XML::Node.new "article", @doc_f
-    article.content = " "
+    article.content = ""
     nodes.last.add_next_sibling(article)
 # h1.parent = div  # div становится "родителем" h1
     ahead.parent = article

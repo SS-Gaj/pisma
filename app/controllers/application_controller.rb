@@ -31,7 +31,6 @@ class ApplicationController < ActionController::Base
     agent = Mechanize.new
     page = agent.get("http://www.reuters.com" + url_article)    #@band.bn_url
     doc = Nokogiri::HTML(page.body)
-      
     #div_all_page = doc.css("div[class=renderable]")
     div_all_page = doc.css("div[class=inner-container_1LBl0]")    
     #@div_article_header = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y] h1").text
@@ -50,6 +49,9 @@ class ApplicationController < ActionController::Base
     article.each do |elem|
      mas_glob.push(elem.text.gsub("\n", " "))
     end
+    #byebug
+    @div_first = mas_glob[0] if @div_first == ""
+    
     return mas_glob 
   end #def reader(url_article) #для "Прочитать"
   
@@ -193,6 +195,7 @@ byebug
     f << "<h3>" + @div_article_header + "</h3>"
     f << "<h3>" + @div_date + "</h3>"
     f << "<h4>" + url_article + "</h4>"
+    f << "<h5>" + @div_first + "</h5>"
     article.each do |elem|
       mas = []
       mas = elem.split('**')
@@ -221,6 +224,8 @@ byebug
     @div_article_header = article.first.text
     @div_date = article.last.text
     @div_isxurl = div_all_page.css("h4").text
+    @div_first = div_all_page.css("h5").text 
+    #@div_first = " "    #это временная мера, см.п.18.1 hm-news_day-180331(console-21)
     article = div_all_page.css("p")
     @mas_p = []
     article.each do |elem|

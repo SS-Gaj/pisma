@@ -50,8 +50,16 @@ class ApplicationController < ActionController::Base
      mas_glob.push(elem.text.gsub("\n", " "))
     end
     #byebug
-    @div_first = mas_glob[0] if @div_first == ""
-    
+    #@div_first = mas_glob[0] if @div_first == ""~
+    mas_glob.each do |first|
+      if first =~ /(Reuters)/
+        @div_first = first
+        break
+      end
+    end #each do |first|
+    @div_first = @div_first.split('**').first
+
+#    byebug
     return mas_glob 
   end #def reader(url_article) #для "Прочитать"
   

@@ -42,10 +42,20 @@ def new #переход из ленты новостей (Биржи) после
 
    @doc_f = File.open(name_lk) { |f| Nokogiri::XML(f) }
    f = File.new(name_lk, 'w')
+# вставляю @div_first в "newsday"
    newsday = @doc_f.at_css "newsday"
    nodes = @doc_f.css "fullcontent"       # нахожу блок 'fullcontent', поскольку он идет сразу за 'newsday'   
    p = Nokogiri::XML::Node.new "p", @doc_f
    p.content = @div_first
+#byebug   
+   nodes.first.add_previous_sibling(p)
+   p.parent = newsday
+
+# вставляю @div_percent в "newsday"
+   newsday = @doc_f.at_css "newsday"
+   nodes = @doc_f.css "fullcontent"       # нахожу блок 'fullcontent', поскольку он идет сразу за 'newsday'   
+   p = Nokogiri::XML::Node.new "p", @doc_f
+   p.content = @div_percent
 #byebug   
    nodes.first.add_previous_sibling(p)
    p.parent = newsday
@@ -164,7 +174,8 @@ end #editallbtc
       @doc_f = File.open(name_lk) { |f| Nokogiri::XML(f) }
       @article_mas = @doc_f.css "article"
     end # if File.exist?(name_lk)
-    render "show"
+    # render "show"
+      render "2_6show"
   end
 
 def btcnew #переход из ленты новостей после нажатия "Обработать"

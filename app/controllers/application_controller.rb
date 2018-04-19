@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
     unless url_article =~ /live-markets/
       #article = div_all_page.css("div[class=StandardArticleBody_body_1gnLA] p")
       article = div_all_page.css("div[class=body_1gnLA] p")
-      @div_first = div_all_page.css("div[class=body_1gnLA]").css("p[class=first-p_2htdt]").text
+      # @div_first = div_all_page.css("div[class=body_1gnLA]").css("p[class=first-p_2htdt]").text # class=first-p убрали на Рейтерсе
     #byebug
     else
       article = div_all_page.css("div [class=StandardArticleBody_body_1gnLA] pre")
@@ -50,16 +50,55 @@ class ApplicationController < ActionController::Base
      mas_glob.push(elem.text.gsub("\n", " "))
     end
     #byebug
-    #@div_first = mas_glob[0] if @div_first == ""~
     mas_glob.each do |first|
-      if first =~ /(Reuters)/
+      if first =~ /\(Reuters\)/
         @div_first = first
         break
-      end
-    end #each do |first|
-    @div_first = @div_first.split('**').first
-
-#    byebug
+      end # if first =~ /\(Reuters\)/
+    end   # mas_glob.each do |first|
+    mas_glob.each do |first|
+      if first =~ /percent(,*)\s(\w*\s)*(\d)+,\d\d\d.\d/
+        @div_percent = first
+        break
+      end # if first =~ /\(Reuters\)/
+    end   # mas_glob.each do |first|
+    mas_glob.each do |first|
+      if first =~ /STOXX/ and first =~ /percent/
+        @div_percent = first
+        break
+      end # if first =~ /\(Reuters\)/
+    end   # mas_glob.each do |first|
+    if @div_first == nil
+      @div_first = " "
+    else
+    ### для "китайцев" НАЧАЛО
+    if @div_first.include? "**"
+      mas = @div_first.split('**')
+      mas.each do |first|
+       if first =~ /\(Reuters\)/
+        @div_first = first
+        break
+       end
+      end   #mas.each do |first|
+    end # if @div_first.include? "**"
+    @div_first = @div_first + " /" + @div_date +"/"
+    end # if @div_first.include? "**"
+    #@div_percent = " " if @div_percent == nil    
+    if @div_percent == nil
+      @div_percent = " "
+    else
+      if @div_percent.include? "**"
+        mas = @div_percent.split('**')
+        mas.each do |first|
+         if first =~ /percent(,*)\s(\w*\s)*(\d)+,\d\d\d.\d/
+          @div_percent = first
+          break
+         end
+        end   #mas.each do |first|
+      end # if @div_first.include? "**"
+    end   # if @div_percent == nil
+### для "китайцев" КОНЕЦ
+    #byebug
     return mas_glob 
   end #def reader(url_article) #для "Прочитать"
   
@@ -203,7 +242,9 @@ byebug
     f << "<h3>" + @div_article_header + "</h3>"
     f << "<h3>" + @div_date + "</h3>"
     f << "<h4>" + url_article + "</h4>"
+    #byebug
     f << "<h5>" + @div_first + "</h5>"
+    f << "<h5>" + @div_percent + "</h5>"
     article.each do |elem|
       mas = []
       mas = elem.split('**')
@@ -232,7 +273,10 @@ byebug
     @div_article_header = article.first.text
     @div_date = article.last.text
     @div_isxurl = div_all_page.css("h4").text
-    @div_first = div_all_page.css("h5").text 
+#    @div_first = div_all_page.css("h5").text
+    div_h5 = div_all_page.css("h5")
+    @div_first = div_h5.first.text
+    @div_percent = div_h5.last.text
     #@div_first = " "    #это временная мера, см.п.18.1 hm-news_day-180331(console-21)
     article = div_all_page.css("p")
     @mas_p = []

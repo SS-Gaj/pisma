@@ -18,7 +18,8 @@ class BandsController < ApplicationController
 "https://www.reuters.com/news/archive/RCOMUS_Fintech", 
 "https://www.reuters.com/news/archive/RCOMUS_Cyberrisk"
 ]
-
+# https://www.reuters.com/article/china-markets
+# 
     rtrs_url.each do |my_url|
       #1 обрабатываем 1-ю страницу
       pastday = DateTime.parse('2017-08-18T04:05:06+03:00')   #просто init
@@ -103,6 +104,12 @@ class BandsController < ApplicationController
 	    elsif mas =~ /china-stocks-close/
 	      need_file = true
 	    elsif mas =~ /china-stocks-midday/
+	      need_file = true
+	    elsif mas =~ /china-markets/
+	      need_file = true
+	    elsif mas =~ /china-stocks-hongkong-close/
+	      need_file = true
+	    elsif mas =~ /china-stocks-hongkong-close/
 	      need_file = true
 	    elsif mas =~ /europe-stocks/
 	      need_file = true

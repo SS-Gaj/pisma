@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180118162734) do
+ActiveRecord::Schema.define(version: 20180716181552) do
 
   create_table "bands", force: true do |t|
     t.string   "bn_head"
@@ -50,6 +50,8 @@ ActiveRecord::Schema.define(version: 20180118162734) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "lk_btcfile"
+    t.string   "lk_file_g"
+    t.string   "lk_file_o"
   end
 
   create_table "reviews", force: true do |t|

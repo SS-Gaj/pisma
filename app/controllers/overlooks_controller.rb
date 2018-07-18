@@ -10,14 +10,39 @@ def new #переход из ленты новостей (Биржи) после
     texttocopy  #/app/controllers/application_controller.rb
   #формирование имени файла "Обзор за ..."
   target_date = Date.new(DateTime.parse(@div_date).year, DateTime.parse(@div_date).mon, DateTime.parse(@div_date).day)
-  name_lk = dir_save_file(target_date) + name_save_file(target_date, '/lk-', '.xml')  #def dir_save_file и def name_save_file locate in 
+#  name_lk = dir_save_file(target_date) + name_save_file(target_date, '/lk-', '.xml')  #def dir_save_file и def name_save_file locate in 
+  @preflk = ""
+        if @div_isxurl =~ /global/
+        @preflk = '/g-lk-'
+      elsif @div_isxurl =~ /europe-stocks/
+        @preflk = '/lk-'
+      elsif @div_isxurl =~ /oil-/
+        @preflk = '/o-lk-'
+      else
+        @preflk = '/lk-'
+      end
+      #
+  name_lk = dir_save_file(target_date) + name_save_file(target_date, @preflk, '.xml')  #def dir_save_file и def name_save_file locate in 
+
 #byebug
 	unless File.exist?(name_lk)
 	  unless Overlook.exists?(lk_date: target_date)
-      overlook = Overlook.new(lk_date: target_date, lk_file: name_lk)
+      if @preflk == '/g-lk-'
+        overlook = Overlook.new(lk_date: target_date, lk_file_g: name_lk)        
+      elsif @preflk == '/o-lk-'
+        overlook = Overlook.new(lk_date: target_date, lk_file_o: name_lk)                
+      else
+        overlook = Overlook.new(lk_date: target_date, lk_file: name_lk)        
+      end
     else
       overlook = Overlook.find_by lk_date: target_date
+      if @preflk == '/g-lk-'
+        overlook.lk_file_g  = name_lk
+      elsif @preflk == '/o-lk-'
+        overlook.lk_file_o  = name_lk
+      else
       overlook.lk_file  = name_lk
+      end
     end #unless Overlook.exists?(lk_date: target_date)
     overlook.save
 		f = File.new(name_lk, 'w')
@@ -103,10 +128,22 @@ def editall	# при нажатии "Copy all"
   article = div_all_page.css("h3")
   @div_article_header = article.first.text
   @div_date = article.last.text
+ @div_isxurl = div_all_page.css("h4").text
   article = div_all_page.css("p")  
   #target_date = Date.today
   target_date = Date.new(DateTime.parse(@div_date).year, DateTime.parse(@div_date).mon, DateTime.parse(@div_date).day)
-  name_lk = dir_save_file(target_date) + name_save_file(target_date, '/lk-', '.xml')  #def dir_save_file и def name_save_file locate in 
+    @preflk = ""
+        if @div_isxurl =~ /global/
+        @preflk = '/g-lk-'
+      elsif @div_isxurl =~ /europe-stocks/
+        @preflk = '/lk-'
+      elsif @div_isxurl =~ /oil-/
+        @preflk = '/o-lk-'
+      else
+        @preflk = '/lk-'
+      end
+#byebug
+  name_lk = dir_save_file(target_date) + name_save_file(target_date, @preflk, '.xml')  #def dir_save_file и def name_save_file locate in 
 	if File.exist?(name_lk)
    @doc_f = File.open(name_lk) { |f| Nokogiri::XML(f) }
    f = File.new(name_lk, 'w')

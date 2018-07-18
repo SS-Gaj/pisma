@@ -31,15 +31,22 @@ class ApplicationController < ActionController::Base
     agent = Mechanize.new
     page = agent.get("http://www.reuters.com" + url_article)    #@band.bn_url
     doc = Nokogiri::HTML(page.body)
-    #div_all_page = doc.css("div[class=renderable]")
-    div_all_page = doc.css("div[class=inner-container_1LBl0]")    
-    #@div_article_header = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y] h1").text
-    @div_article_header = div_all_page.css("div[class=content-container_3Ma9y] h1").text
-    #@div_date = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y]").css("div[class=ArticleHeader_date_V9eGk]").text
-    @div_date = div_all_page.css("div[class=content-container_3Ma9y]").css("div[class=date_V9eGk]").text
+    ##div_all_page = doc.css("div[class=renderable]")
+    #div_all_page = doc.css("div[class=inner-container_1LBl0]")
+    div_all_page = doc.css("div[class=StandardArticle_inner-container]")
+    
+    ##@div_article_header = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y] h1").text
+    #@div_article_header = div_all_page.css("div[class=content-container_3Ma9y] h1").text
+    @div_article_header = div_all_page.css("div[class=ArticleHeader_content-container] h1").text
+    
+    ##@div_date = div_all_page.css("div[class=ArticleHeader_content-container_3Ma9y]").css("div[class=ArticleHeader_date_V9eGk]").text
+    #@div_date = div_all_page.css("div[class=content-container_3Ma9y]").css("div[class=date_V9eGk]").text
+    @div_date = div_all_page.css("div[class=ArticleHeader_content-container]").css("div[class=ArticleHeader_date]").text
     unless url_article =~ /live-markets/
-      #article = div_all_page.css("div[class=StandardArticleBody_body_1gnLA] p")
-      article = div_all_page.css("div[class=body_1gnLA] p")
+      ##article = div_all_page.css("div[class=StandardArticleBody_body_1gnLA] p")
+      #article = div_all_page.css("div[class=body_1gnLA] p")
+      article = div_all_page.css("div[class=StandardArticleBody_body] p")
+      
       # @div_first = div_all_page.css("div[class=body_1gnLA]").css("p[class=first-p_2htdt]").text # class=first-p убрали на Рейтерсе
     #byebug
     else

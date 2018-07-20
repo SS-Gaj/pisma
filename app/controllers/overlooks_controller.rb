@@ -14,7 +14,19 @@ def new #переход из ленты новостей (Биржи) после
   @preflk = ""
         if @div_isxurl =~ /global/
         @preflk = '/g-lk-'
+      elsif @div_isxurl =~ /usa-stocks/
+        @preflk = '/lk-'
       elsif @div_isxurl =~ /europe-stocks/
+        @preflk = '/lk-'
+      elsif @div_isxurl =~ /european-shares/
+        @preflk = '/lk-'
+      elsif @div_isxurl =~ /europe-stocks/
+        @preflk = '/lk-'
+      elsif @div_isxurl =~ /japan-stocks/
+        @preflk = '/lk-'
+      elsif @div_isxurl =~ /hongkong/
+        @preflk = '/lk-'
+      elsif @div_isxurl =~ /china/
         @preflk = '/lk-'
       elsif @div_isxurl =~ /oil-/
         @preflk = '/o-lk-'
@@ -135,7 +147,19 @@ def editall	# при нажатии "Copy all"
     @preflk = ""
         if @div_isxurl =~ /global/
         @preflk = '/g-lk-'
+      elsif @div_isxurl =~ /usa-stocks/
+        @preflk = '/lk-'
       elsif @div_isxurl =~ /europe-stocks/
+        @preflk = '/lk-'
+      elsif @div_isxurl =~ /european-shares/
+        @preflk = '/lk-'
+      elsif @div_isxurl =~ /europe-stocks/
+        @preflk = '/lk-'
+      elsif @div_isxurl =~ /japan-stocks/
+        @preflk = '/lk-'
+      elsif @div_isxurl =~ /hongkong/
+        @preflk = '/lk-'
+      elsif @div_isxurl =~ /china/
         @preflk = '/lk-'
       elsif @div_isxurl =~ /oil-/
         @preflk = '/o-lk-'
@@ -204,6 +228,30 @@ end #editallbtc
     end # if File.exist?(name_lk)
   end #show
 
+  def globalshow  #кнопка "Просмотреть" из страницы "Обзор за..."
+    @overlook = Overlook.find(params[:id])
+    name_lk = @overlook.lk_file_g
+    if File.exist?(name_lk)
+      @doc_f = File.open(name_lk) { |f| Nokogiri::XML(f) }
+      @newsday_mas = @doc_f.css "newsday p"
+      @article_mas = @doc_f.css "fullcontent article"
+#      @article_mas = @doc_f.css "fullcontent" #"article"
+      render "show"
+    end # if File.exist?(name_lk)
+  end #globalshow
+
+  def oilshow  #кнопка "Просмотреть" из страницы "Обзор за..."
+    @overlook = Overlook.find(params[:id])
+    name_lk = @overlook.lk_file_o
+    if File.exist?(name_lk)
+      @doc_f = File.open(name_lk) { |f| Nokogiri::XML(f) }
+      @newsday_mas = @doc_f.css "newsday p"
+      @article_mas = @doc_f.css "fullcontent article"
+#      @article_mas = @doc_f.css "fullcontent" #"article"
+      render "show"
+    end # if File.exist?(name_lk)
+  end #oilshow
+  
   def btcshow  #кнопка "Просмотреть" из страницы "Обзор за..."
     @overlook = Overlook.find(params[:id])
     name_lk = @overlook.lk_btcfile

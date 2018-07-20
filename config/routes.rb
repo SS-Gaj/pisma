@@ -31,6 +31,8 @@ Pisma::Application.routes.draw do
     get 'append', on: :member
     get 'fact', on: :member
     get 'btcfact', on: :member
+    get 'globalshow', on: :member
+    get 'oilshow', on: :member
   end
 #170814  match '/show',    to: 'bands#show',    via: 'get' 
   # get "bands/index"
